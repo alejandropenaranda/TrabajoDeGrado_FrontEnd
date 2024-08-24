@@ -1,35 +1,62 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import { AuthResponse } from "../types/types";
+import { AuthResponse, User } from "../types/types";
 
-interface AuthProviderProps{
+interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-const AuthContext = createContext({
+interface AuthContextType {
+    isAuthenticated: boolean;
+    getAccessToken: () => string;
+    saveUser: (userData: AuthResponse) => void;
+    user: User | undefined;
+}
+
+const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
-    getAccesToken: () => {},
-    saveUser: (userData: AuthResponse) => {}
+    getAccessToken: () => "",
+    saveUser: () => {},
+    user: undefined
 });
 
-export function AuthProvider({children}: AuthProviderProps){
-    const [isAuthenticated, setIsAuthenticated] = useState (false);
-    const [accesToken, setAccessToken] = useState<String>("");
+export function AuthProvider({ children }: AuthProviderProps) {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        const token = localStorage.getItem('token');
+        return !!token;
+      });
+    const [accessToken, setAccessToken] = useState<string>("");
+    const [user, setUser] = useState<User>();
 
-    function getAccesToken(){
-        return accesToken
+    function getAccessToken() {
+        return accessToken;
     }
 
-    function saveUser(userData: AuthResponse){
+    useEffect(() => {
+        const loggedUserJSON = localStorage.getItem("user");
+        if (loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON) as User;
+            setUser(user);
+        }
+
+        const loggedUserToken = localStorage.getItem("token");
+        if (loggedUserToken) {
+            setAccessToken(loggedUserToken);
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+    function saveUser(userData: AuthResponse) {
         setAccessToken(userData.token);
-        
-        localStorage.setItem("token",JSON.stringify(userData.token))
+        localStorage.setItem("token", JSON.stringify(userData.token));
         setIsAuthenticated(true);
+        setUser(userData.user);
+        localStorage.setItem("user", JSON.stringify(userData.user));
     }
- 
+
     return (
-    <AuthContext.Provider value = {{isAuthenticated, getAccesToken, saveUser}}>
-        {children}
-    </AuthContext.Provider>
+        <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, user }}>
+            {children}
+        </AuthContext.Provider>
     );
 }
 

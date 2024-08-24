@@ -1,3 +1,8 @@
+import{ User } from "../types/types";
+
 export default function Home() {
-    return <h1>Home</h1>
+
+    const user = JSON.parse(localStorage.getItem("user")) as User;
+
+    return <h1>bienvenido al Home {user.nombre}</h1>
 }

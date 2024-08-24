@@ -49,7 +49,18 @@ export default function Login() {
                 
                 if(json.token){
                     auth.saveUser(json);
-                    goTo('/home')
+
+                    const user = json.user
+                    goTo('/home');
+                    // if (user.is_admin) {
+                    //     goTo('/admin-dashboard');
+                    // } else if (user.is_director) {
+                    //     goTo('/director-dashboard');
+                    // } else if (user.is_profesor) {
+                    //     goTo('/profesor-dashboard');
+                    // } else {
+                    //     goTo('/home');
+                    // }
                 }
   
             }else{
