@@ -1,5 +1,6 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { AuthResponse, User } from "../types/types";
+import { Token } from "@mui/icons-material";
 
 interface AuthProviderProps {
     children: React.ReactNode;
@@ -9,14 +10,16 @@ interface AuthContextType {
     isAuthenticated: boolean;
     getAccessToken: () => string;
     saveUser: (userData: AuthResponse) => void;
-    user: User | undefined;
+    getUser: () => (User | undefined);
+    signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
     getAccessToken: () => "",
     saveUser: () => {},
-    user: undefined
+    getUser: () => ({} as User | undefined),
+    signOut: () => {},
 });
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -53,8 +56,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.setItem("user", JSON.stringify(userData.user));
     }
 
+    function getUser(){
+        return user;
+    }
+
+    function signOut (){
+        setIsAuthenticated(false);
+        setAccessToken("");
+        setUser(undefined);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user")
+    }
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, user }}>
+        <AuthContext.Provider value={{ isAuthenticated, getAccessToken, saveUser, getUser, signOut }}>
             {children}
         </AuthContext.Provider>
     );
