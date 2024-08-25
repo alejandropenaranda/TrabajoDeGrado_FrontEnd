@@ -17,8 +17,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
+import { LuSchool } from "react-icons/lu";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoSchoolOutline } from "react-icons/io5";
 import UserHeaderCard from './UserHeaderCard.tsx';
+import { useAuth } from '../auth/AuthProvider.tsx';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const drawerWidth = 240;
 
@@ -113,7 +118,22 @@ interface SideBarProps {
 export default function SideBar({ children }: SideBarProps) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [menudata, setMenuData] = useState("Home");
+
+  const auth = useAuth();
+  const user = auth.getUser();
+  const navigate = useNavigate(); // Crear instancia de useNavigate
+
+  const getRole = () => {
+    if (!user) return '';
+    if (user.is_admin) return 'Admin';
+    if (user.is_director) return 'Director';
+    if (user.is_profesor) return 'Docente';
+    else{
+      return '';
+    }
+  }
+
+  const role = getRole();
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -121,6 +141,19 @@ export default function SideBar({ children }: SideBarProps) {
 
   const handleDrawerOpen = () => {
     setOpen(true);
+  };
+
+  const menuItems = [
+    { text: 'Dashboard', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin', 'Director', 'Docente'], route: role === 'Admin' ? '/admin-dashboard': '/director-dashboard' },
+    { text: 'Vista Facultad', icon: <LuSchool size={25}/>, roles: ['Admin'], route: '/faculty-view' },
+    { text: 'Vista Escuela', icon: <IoSchoolOutline size={25}/>, roles: ['Admin', 'Director'], route: '/school-view' },
+    { text: 'Vista Docente', icon: <FaChalkboardTeacher size={25}/>, roles: ['Admin', 'Director', 'Docente'], route: '/teacher-view' },
+  ];
+
+  const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
+
+  const handleNavigation = (route: string) => {
+    navigate(route); // Redirigir a la ruta especificada
   };
 
   return (
@@ -158,96 +191,38 @@ export default function SideBar({ children }: SideBarProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
+          {filteredMenuItems.map((item, index) => (
+            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: 'white'  // Cambia el color de los iconos a blanco
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
+                onClick={() => handleNavigation(item.route)} // Navegar cuando se hace clic
               >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0, color: 'white' }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: 'white'  // Cambia el color de los iconos a blanco
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home 2" sx={{ opacity: open ? 1 : 0, color: 'white' }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: 'white'  // Cambia el color de los iconos a blanco
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home 3" sx={{ opacity: open ? 1 : 0, color: 'white' }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: 'white'  // Cambia el color de los iconos a blanco
-                }}
-              >
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home 4" sx={{ opacity: open ? 1 : 0, color: 'white' }} />
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color: 'white'
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, color: 'white' }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </HoverableDrawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <p>Sistema de análisis de evaluaciones docente</p>
+        <Typography sx={{pt:"60px", color:'#8f8f8f', fontSize:22}}>Sistema de análisis de evaluaciones docente</Typography>
         {children}
       </Box>
     </Box>
   );
 }
+
+

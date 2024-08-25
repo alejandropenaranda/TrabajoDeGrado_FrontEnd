@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
 import{ User } from "../types/types";
 
-export default function Home() {
+export default function DirectorDashboard() {
 
     const user = JSON.parse(localStorage.getItem("user") || '{}') as User;
 
@@ -10,7 +10,7 @@ export default function Home() {
         <>
             <SideBar>
                 <Grid>
-                    <h1>   bienvenido al Home {user.nombre}</h1>
+                    <h1>Director dashboard</h1>
                 </Grid>
             </SideBar>
             

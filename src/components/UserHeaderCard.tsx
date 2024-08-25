@@ -9,7 +9,7 @@ const UserHeaderCard = ({}) => {
 
     const auth = useAuth();
 
-    const handleSingOut = (event: React.MouseEvent<HTMLElement>) => {
+    const handleSingOut = () => {
       auth.signOut()
     }
 
@@ -32,8 +32,8 @@ const UserHeaderCard = ({}) => {
         <>
           <Grid container direction="row" alignItems="center" justifyContent="flex-end" gap={2} sx={{ width: 'auto', cursor: 'pointer' }}  onClick={handleClick}>
               <Grid item>
-                  <Typography variant="body1" fontWeight="bold">
-                      {user.nombre} - <span style={{ color: 'red' }}>{getRole()}</span>
+                  <Typography variant="body1" fontWeight="normal">
+                      {user.nombre} - <span style={{ color: 'red', fontWeight: "bold" }}>{getRole()}</span>
                   </Typography>
               </Grid>
               <Avatar 
@@ -58,7 +58,7 @@ const UserHeaderCard = ({}) => {
           <MenuItem onClick={() => { handleClose(); alert('Cambiar contraseña'); }}>
               Cambiar Contraseña
           </MenuItem>
-          <MenuItem onClick={(e) => {handleSingOut(e)}}>
+          <MenuItem onClick={() => {handleSingOut()}}>
               Cerrar Sesión
           </MenuItem>
       </Menu>

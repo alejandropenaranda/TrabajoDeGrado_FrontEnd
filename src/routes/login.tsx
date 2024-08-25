@@ -52,15 +52,15 @@ export default function Login() {
 
                     const user = json.user
                     goTo('/home');
-                    // if (user.is_admin) {
-                    //     goTo('/admin-dashboard');
-                    // } else if (user.is_director) {
-                    //     goTo('/director-dashboard');
-                    // } else if (user.is_profesor) {
-                    //     goTo('/profesor-dashboard');
-                    // } else {
-                    //     goTo('/home');
-                    // }
+                    if (user.is_admin) {
+                        goTo('/admin-dashboard');
+                    } else if (user.is_director) {
+                        goTo('/director-dashboard');
+                    } else if (user.is_profesor) {
+                        goTo('/teachers-view');
+                    } else {
+                        goTo('/home');
+                    }
                 }
   
             }else{
