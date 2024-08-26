@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, Avatar, Grid, Menu, MenuItem } from '@mui/material';
-import { User } from '../types/types';
+import { User } from '../types/Authtypes';
 import { useAuth } from '../auth/AuthProvider';
 
 const UserHeaderCard = ({}) => {

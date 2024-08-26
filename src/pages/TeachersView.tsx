@@ -1,19 +1,26 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
-import{ User } from "../types/types";
+import { useAuth } from "../auth/AuthProvider";
+import WordCloud from "../components/WordCloud";
 
 export default function TeachersView() {
 
-    const user = JSON.parse(localStorage.getItem("user") || '{}') as User;
+    const auth = useAuth();
+    const user = auth.getUser();
+    const token = auth.getAccessToken();
+
+    if (!user) {
+        return <p>User not found</p>;
+    }
 
     return (
         <>
             <SideBar>
                 <Grid>
-                <h1>Teachers View</h1>
+                    <h1>Teachers View</h1>
+                    <WordCloud token={token} id={user.id} />
                 </Grid>
             </SideBar>
-            
         </>
-    )
+    );
 }

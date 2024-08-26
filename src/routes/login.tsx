@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { API_URL } from "../auth/constants.ts";
-import { AuthResponse, AuthResponseError } from "../types/types.ts";
+import { AuthResponse, AuthResponseError } from "../types/Authtypes.ts";
 
 export default function Login() {
 
@@ -21,7 +21,7 @@ export default function Login() {
     const goTo = useNavigate();
 
     if (auth.isAuthenticated) {
-        return <Navigate to='/home' />;
+        return <Navigate to='/' />;
     }
 
     const [email, setEmail] = useState("");
@@ -51,15 +51,13 @@ export default function Login() {
                     auth.saveUser(json);
 
                     const user = json.user
-                    goTo('/home');
+                    goTo('/');
                     if (user.is_admin) {
                         goTo('/admin-dashboard');
                     } else if (user.is_director) {
                         goTo('/director-dashboard');
                     } else if (user.is_profesor) {
-                        goTo('/teachers-view');
-                    } else {
-                        goTo('/home');
+                        goTo('/teacher-view');
                     }
                 }
   

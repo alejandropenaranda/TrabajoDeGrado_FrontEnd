@@ -1,6 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import { AuthResponse, User } from "../types/types";
-import { Token } from "@mui/icons-material";
+import { AuthResponse, User } from "../types/Authtypes";
 
 interface AuthProviderProps {
     children: React.ReactNode;
