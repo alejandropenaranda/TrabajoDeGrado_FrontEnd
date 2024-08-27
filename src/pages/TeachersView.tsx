@@ -1,8 +1,7 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
 import { useAuth } from "../auth/AuthProvider";
-import WordCloud from "../components/WordCloud";
-
+import MyTabs from '../components/TabPanel'
 export default function TeachersView() {
 
     const auth = useAuth();
@@ -17,8 +16,8 @@ export default function TeachersView() {
         <>
             <SideBar>
                 <Grid>
-                    <h1>Teachers View</h1>
-                    <WordCloud token={token} id={user.id} />
+                    <h1>Docente {user.nombre}</h1>
+                        <MyTabs token={token} id={user.id}/>
                 </Grid>
             </SideBar>
         </>

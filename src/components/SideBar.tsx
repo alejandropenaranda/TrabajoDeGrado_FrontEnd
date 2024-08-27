@@ -157,7 +157,7 @@ export default function SideBar({ children }: SideBarProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', backgroundColor: "#F5F5F5"}}>
       <CssBaseline />
       <AppBar position="fixed" elevation={3} sx={{ bgcolor: "White", color: "#8f8f8f" }}>
         <Toolbar>
@@ -219,7 +219,7 @@ export default function SideBar({ children }: SideBarProps) {
       </HoverableDrawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Typography sx={{pt:"60px", color:'#8f8f8f', fontSize:22}}>Sistema de análisis de evaluaciones docente</Typography>
-        {children}
+          {children}
       </Box>
     </Box>
   );
