@@ -23,7 +23,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoSchoolOutline } from "react-icons/io5";
 import UserHeaderCard from './UserHeaderCard.tsx';
 import { useAuth } from '../auth/AuthProvider.tsx';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 

@@ -3,8 +3,11 @@ import { Grid, Tabs, Tab, Box, Typography } from '@mui/material';
 import WordCloud from '../components/WordCloud';
 import { getWordCloud } from '../services/wordCloud';
 import GradesBarChart from '../components/BarChart'
-import { useAsyncError } from 'react-router-dom';
 import { getCuantBarChart, getCualBarChart } from '../services/BarCharts'
+import { getBestWorstComment } from '../services/BestWorstComment';
+import CommentViewer from './CommentViewer';
+import { getAverageGrades } from '../services/AverageGrades';
+import GradesCards from './GradesCards';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,9 +40,9 @@ function TabPanel(props: TabPanelProps) {
       }}
     >
       {value === index && (
-        <Box sx={{ height: '100%' }}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Grid sx={{ height: '100%', gap: '10px'}}>
+          {children}
+        </Grid>
       )}
     </Grid>
   );
@@ -62,6 +65,8 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
   const [wordCloudData, setWordCloudData] = useState<any>(null);
   const [cuantBarChartData, setcuantBarChartData] = useState<any>(null);
   const [cualBarChartData, setcualBarChartData] = useState<any>(null);
+  const [bestWorstCommentData, setBestWorstCommentData] = useState<any>(null);
+  const [averageGradesData, setAverageGradesData] = useState<any>(null)
   // Aqui poner tantos use estate como componentes que hagan peticiones tenga en mis tabs
 
   useEffect(() => {
@@ -81,12 +86,24 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         setcualBarChartData(data);
     };
 
+    const fetchBestWorstCommentData = async () => {
+      const data = await getBestWorstComment(token, id);
+      setBestWorstCommentData(data);
+    };
+
+    const fetchAverageGradesData = async () => {
+      const data = await getAverageGrades(token, id);
+      setAverageGradesData(data);
+    };
+
     fetchWordCloudData();
     fetchCuantBarChartData();
     fetchCualBarChartData();
+    fetchBestWorstCommentData();
+    fetchAverageGradesData();
   }, [token, id]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (__event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -99,15 +116,15 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         sx={{
           backgroundColor: 'red',
           borderTopLeftRadius: 10,
-          borderTopRightRadius: 10, // Barra de color rojo
+          borderTopRightRadius: 10,
           '& .MuiTabs-indicator': {
-            backgroundColor: 'white', // Indicador de selección blanco
+            backgroundColor: 'white',
           },
           '& .MuiTab-root': {
-            color: 'white', // Color del texto de las pestañas cuando no están seleccionadas
+            color: 'white',
           },
           '& .Mui-selected': {
-            color: 'white', // Color del texto de la pestaña seleccionada
+            color: 'white',
           },
         }}
       >
@@ -123,7 +140,12 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         {cualBarChartData && <GradesBarChart data={cualBarChartData} nombre='Calificación Cualitativa' />}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Content for Tab 3
+        <Grid>
+          {bestWorstCommentData && <CommentViewer data={bestWorstCommentData}/>}
+        </Grid>
+        <Grid sx={{mt: '20px'}}>
+          {averageGradesData && <GradesCards data={averageGradesData}/>}
+        </Grid>
       </TabPanel>
     </Box>
   );

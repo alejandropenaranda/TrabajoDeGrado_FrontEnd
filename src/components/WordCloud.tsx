@@ -96,7 +96,7 @@ const WordCloud: React.FC<WordCloudProps> = ({ data }) => {
   const palabrasMasFrecuentes = data.palabras_mas_frecuentes;
 
   return (
-    <Grid sx={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px', textAlign: 'center' }}>
+    <Grid sx={{ padding: '20px', border: '1px solid #ddd', borderRadius: '8px', textAlign: 'center', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
       {imageSrc ? (
         <>
           <img src={imageSrc} alt="Word Cloud" style={{ maxWidth: '100%', height: 'auto' }} />

@@ -1,3 +1,5 @@
+import { Materia } from "./GeneralTypes";
+
 export interface WordCloudResponse {
     wordcloud: string;
     palabras_mas_frecuentes: [string, number][];
@@ -14,5 +16,36 @@ export interface ChartResponse{
 }
 
 export interface ResponseError {
+    error: string;
+}
+
+export interface BestWorstCommentResponse{
+    mejor:{
+        docente_id: number;
+        materia: Materia;
+        periodo: string;
+        comentario: string;
+        promedio: number;
+    };
+    peor:{
+        docente_id: number;
+        materia: Materia;
+        periodo: string;
+        comentario: string;
+        promedio: number;
+    };
+}
+
+export interface BestWorstCommentError{
+    error: string;
+}
+
+export interface AverageGradesResponse{
+    promedio: number,
+    promedio_cual: number,
+    promedio_cuant: number
+}
+
+export interface AverageGradesError{
     error: string;
 }

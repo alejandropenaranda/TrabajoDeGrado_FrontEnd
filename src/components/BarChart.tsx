@@ -13,30 +13,51 @@ const GradesBarChart: React.FC<GradesBarChartProps> = ({ data, nombre }) => {
   const SchoolGrade = data.promedio_escuela;
   const TeacherGrade = data.promedio_docente;
 
-  console.log(FacultyGrade, SchoolGrade, TeacherGrade)
+  const Chartnames = [
+    'Calificación promedio de los docentes de la facultad',
+    'Calificación promedio de los docentes de la escuela',
+    'Calificación promedio del docente'
+  ];
 
-  const Chartnames =['Calificación promedio de los docentes de la facultad', 'Calificación promedio de los docentes de la escuela', 'calificación promedio del docente']
+  const titleStyles = {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: '16px',
+  };
+
   return (
-    <Grid>
-      <Typography variant="h6">{nombre}</Typography>
-      <BarChart
-        series={[
+    <Grid container sx={{
+      borderRadius: '8px',
+      padding: '16px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+      backgroundColor: 'white',
+    }}>
+      <Grid item xs={12}>
+        <Typography variant="h6" sx={titleStyles}>
+          {nombre}
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <BarChart
+          series={[
             {
               data: [FacultyGrade, SchoolGrade, TeacherGrade],
             },
           ]}
-        height={290}
-        grid={{horizontal: true}}
-        xAxis={[{ data: Chartnames,
+          height={290}
+          grid={{ horizontal: true }}
+          xAxis={[{
+            data: Chartnames,
             scaleType: 'band',
             colorMap: {
-                type: 'ordinal',
-                values: Chartnames,
-                colors: ['red', '#6D4B9A', '#2F4858'],
-              }
-        }]}
-        margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-      />
+              type: 'ordinal',
+              values: Chartnames,
+              colors: ['red', '#6D4B9A', '#2F4858'],
+            }
+          }]}
+          margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+        />
+      </Grid>
     </Grid>
   );
 }
