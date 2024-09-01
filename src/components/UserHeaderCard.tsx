@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Avatar, Grid, Menu, MenuItem } from '@mui/material';
-import { User } from '../types/Authtypes';
+import { User } from '../types/GeneralTypes';
 import { useAuth } from '../auth/AuthProvider';
+import { APP_URL } from '../auth/constants';
 
 const UserHeaderCard = ({}) => {
 
@@ -37,7 +38,7 @@ const UserHeaderCard = ({}) => {
                   </Typography>
               </Grid>
               <Avatar 
-                  src='./avatar.png' 
+                  src={`${APP_URL}/avatar.png`}
                   alt="User Avatar"
                   sx={{ width: 60, height: 60 }}
               />

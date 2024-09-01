@@ -49,3 +49,17 @@ export interface AverageGradesResponse{
 export interface AverageGradesError{
     error: string;
 }
+
+export interface AvergaGradesRegistersItem {
+    id: number;
+    periodo: string;
+    docente_id: number;
+    promedio: number;
+    promedio_cuant: number;
+    promedio_cual: number;
+    materia: Materia;
+    docente_nombre: string;
+    escuela: string;
+}
+
+export type AvergaGradesRegistersResponse = AvergaGradesRegistersItem[];

@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
 import { useAuth } from "../auth/AuthProvider";
 import MyTabs from '../components/TabPanel'
+
 export default function TeachersView() {
 
     const auth = useAuth();

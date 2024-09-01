@@ -1,18 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Landing from './routes/Landing.tsx'
 import Login from './routes/Login.tsx'
-import Home from './routes/Home.tsx'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import { AuthProvider } from './auth/AuthProvider.tsx'
 import TeachersView from './pages/TeachersView.tsx'
 import SchoolView from './pages/SchoolView.tsx'
-import GeneralView from './pages/GeneralView.tsx'
+import FacultyView from './pages/FacultyView.tsx'
 import DirectorDashboard from './pages/DirectorDashboard.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
+import TeacherViewer from './pages/TeacherViewer.tsx'
 
 const router = createBrowserRouter([
   {
@@ -33,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/faculty-view",
-        element: <GeneralView/>
+        element: <FacultyView/>
       },
       {
         path:"/school-view",
@@ -42,6 +40,10 @@ const router = createBrowserRouter([
       {
         path:"/teacher-view",
         element: <TeachersView/>
+      },
+      {
+        path:"/teacher-viewer/:id",
+        element: <TeacherViewer/>
       },
 
 

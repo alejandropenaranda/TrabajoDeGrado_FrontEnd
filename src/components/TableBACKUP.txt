@@ -1,0 +1,995 @@
+// import React, { useState } from 'react';
+// import {
+//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+//     TextField, Checkbox, FormControlLabel, Button, Grid, Box, Typography,
+//     InputAdornment, TableFooter, TablePagination
+// } from '@mui/material';
+// import SearchIcon from '@mui/icons-material/Search';
+
+// // Ejemplo de datos
+// const initialData = [
+//     { docente: 'PROFESOR #1', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2024-1', escuela: 'QUÍMICA' },
+//     { docente: 'PROFESOR #2', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2023-2', escuela: 'MECÁNICA' },
+//     { docente: 'PROFESOR #3', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2023-1', escuela: 'INDUSTRIAL' },
+//     { docente: 'PROFESOR #4', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2024-1', escuela: 'CIVIL Y GEOMÁTICA' },
+//     { docente: 'PROFESOR #5', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2022-2', escuela: 'SISTEMAS Y COMPUTACIÓN' },
+//     { docente: 'PROFESOR #6', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2022-1', escuela: 'ALIMENTOS' },
+//     // Agrega más datos si es necesario para probar la paginación
+// ];
+
+// const ExampleTableComponent = () => {
+//     const [data, setData] = useState(initialData);
+//     const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+//     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [page, setPage] = useState(0);
+//     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+//     // Extrae los períodos y escuelas únicos de los datos
+//     const uniquePeriods = Array.from(new Set(initialData.map(item => item.periodo)));
+//     const uniqueSchools = Array.from(new Set(initialData.map(item => item.escuela)));
+
+//     // Maneja los cambios en los filtros de periodo
+//     const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const period = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedPeriods(prevSelectedPeriods =>
+//             isChecked
+//                 ? [...prevSelectedPeriods, period]
+//                 : prevSelectedPeriods.filter(p => p !== period)
+//         );
+//     };
+
+//     // Maneja los cambios en los filtros de escuela
+//     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const school = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedSchools(prevSelectedSchools =>
+//             isChecked
+//                 ? [...prevSelectedSchools, school]
+//                 : prevSelectedSchools.filter(s => s !== school)
+//         );
+//     };
+
+//     // Maneja los cambios en el campo de búsqueda
+//     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setSearchTerm(event.target.value.toLowerCase());
+//     };
+
+//     // Filtra los datos según los periodos, escuelas seleccionados y el término de búsqueda
+//     const filteredData = data.filter(item =>
+//         (selectedPeriods.length === 0 || selectedPeriods.includes(item.periodo)) &&
+//         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela)) &&
+//         item.docente.toLowerCase().includes(searchTerm)
+//     );
+
+//     // Maneja el cambio de página
+//     const handleChangePage = (__event: unknown, newPage: number) => {
+//         setPage(newPage);
+//     };
+
+//     // Maneja el cambio de la cantidad de filas por página
+//     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setRowsPerPage(parseInt(event.target.value, 10));
+//         setPage(0);
+//     };
+
+//     return (
+//         <Grid container spacing={3}>
+//             <Grid item xs={12} md={8}>
+//                 <TableContainer component={Paper}>
+//                     <Box sx={{
+//                         backgroundColor: 'red', padding: 2, display: 'flex',
+//                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
+//                         borderTopRightRadius: 10
+//                     }}>
+//                         <Typography variant="h6" sx={{ color: 'white' }}>
+//                             Docentes de la Facultad de Ingeniería
+//                         </Typography>
+//                         <TextField
+//                             placeholder="Buscar Docente"
+//                             variant="outlined"
+//                             value={searchTerm}
+//                             onChange={handleSearchChange}
+//                             InputProps={{
+//                                 endAdornment: (
+//                                     <InputAdornment position="start">
+//                                         <SearchIcon sx={{ color: 'gray' }} />
+//                                     </InputAdornment>
+//                                 ),
+//                             }}
+//                             sx={{ backgroundColor: 'white', borderRadius: 1 }}
+//                         />
+//                     </Box>
+//                     <Table>
+//                         <TableHead sx={{ backgroundColor: 'white' }}>
+//                             <TableRow>
+//                                 <TableCell sx={{ color: 'black' }}>Docente</TableCell>
+//                                 <TableCell sx={{ color: 'black' }}>Calificación cualitativa promedio</TableCell>
+//                                 <TableCell sx={{ color: 'black' }}>Calificación cuantitativa promedio</TableCell>
+//                                 <TableCell sx={{ color: 'black' }}>Período</TableCell>
+//                                 <TableCell sx={{ color: 'black' }}>Escuela</TableCell>
+//                                 <TableCell sx={{ color: 'black' }}>Acciones</TableCell>
+//                             </TableRow>
+//                         </TableHead>
+//                         <TableBody sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                             {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+//                                 <TableRow key={index}>
+//                                     <TableCell>{row.docente}</TableCell>
+//                                     <TableCell>{row.cualitativa}</TableCell>
+//                                     <TableCell>{row.cuantitativa}</TableCell>
+//                                     <TableCell>{row.periodo}</TableCell>
+//                                     <TableCell>{row.escuela}</TableCell>
+//                                     <TableCell>
+//                                         <Button variant="contained" sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius:10 }}>Ver más</Button>
+//                                     </TableCell>
+//                                 </TableRow>
+//                             ))}
+//                         </TableBody>
+//                         <TableFooter sx={{borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
+//                             <TableRow>
+//                                 <TablePagination
+//                                     rowsPerPageOptions={[5, 10]}
+//                                     colSpan={6}
+//                                     count={filteredData.length}
+//                                     rowsPerPage={rowsPerPage}
+//                                     page={page}
+//                                     onPageChange={handleChangePage}
+//                                     onRowsPerPageChange={handleChangeRowsPerPage}
+//                                     labelRowsPerPage="Filas por página"
+//                                 />
+//                             </TableRow>
+//                         </TableFooter>
+//                     </Table>
+//                 </TableContainer>
+//             </Grid>
+
+//             <Grid item xs={12} md={4}>
+//                 <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                     <Box sx={{ backgroundColor: 'red', padding: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+//                         <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>Filtros</Typography>
+//                     </Box>
+//                     <Grid container sx={{ padding: 2 }}>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Período</Typography>
+//                             {uniquePeriods.map(period => (
+//                                 <FormControlLabel
+//                                     key={period}
+//                                     control={<Checkbox name={period} onChange={handlePeriodChange} />}
+//                                     label={period}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Escuela</Typography>
+//                             {uniqueSchools.map(school => (
+//                                 <FormControlLabel
+//                                     key={school}
+//                                     control={<Checkbox name={school} onChange={handleSchoolChange} />}
+//                                     label={school}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                     </Grid>
+//                 </Paper>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+
+// export default ExampleTableComponent;
+
+
+// import React, { useState } from 'react';
+// import {
+//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+//     TextField, Checkbox, FormControlLabel, Button, Grid, Box, Typography,
+//     InputAdornment, TableFooter, TablePagination
+// } from '@mui/material';
+// import SearchIcon from '@mui/icons-material/Search';
+// import { AvergaGradesRegistersItem, AvergaGradesRegistersResponse } from '../types/TeacherTypes';
+
+// export interface ColumnConfig {
+//     headerName: string;
+//     fieldName: keyof AvergaGradesRegistersItem; // Hace referencia a las claves del objeto de datos
+// }
+
+// interface TableComponentProps {
+//     columns: ColumnConfig[];
+//     data: AvergaGradesRegistersResponse;
+// }
+
+// // Ejemplo de datos
+// const initialData = [
+//     { docente: 'PROFESOR #1', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2024-1', escuela: 'QUÍMICA' },
+//     { docente: 'PROFESOR #2', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2023-2', escuela: 'MECÁNICA' },
+//     { docente: 'PROFESOR #3', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2023-1', escuela: 'INDUSTRIAL' },
+//     { docente: 'PROFESOR #4', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2024-1', escuela: 'CIVIL Y GEOMÁTICA' },
+//     { docente: 'PROFESOR #5', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2022-2', escuela: 'SISTEMAS Y COMPUTACIÓN' },
+//     { docente: 'PROFESOR #6', cualitativa: 4.0, cuantitativa: 4.25, periodo: '2022-1', escuela: 'ALIMENTOS' },
+//     // Agrega más datos si es necesario para probar la paginación
+// ];
+
+// const TableComponent: React.FC<TableComponentProps> = ({ columns }) => {
+//     const [data, setData] = useState(initialData);
+//     const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+//     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [page, setPage] = useState(0);
+//     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+//     // Extrae los períodos y escuelas únicos de los datos
+//     const uniquePeriods = Array.from(new Set(initialData.map(item => item.periodo)));
+//     const uniqueSchools = Array.from(new Set(initialData.map(item => item.escuela)));
+
+//     // Maneja los cambios en los filtros de periodo
+//     const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const period = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedPeriods(prevSelectedPeriods =>
+//             isChecked
+//                 ? [...prevSelectedPeriods, period]
+//                 : prevSelectedPeriods.filter(p => p !== period)
+//         );
+//     };
+
+//     // Maneja los cambios en los filtros de escuela
+//     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const school = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedSchools(prevSelectedSchools =>
+//             isChecked
+//                 ? [...prevSelectedSchools, school]
+//                 : prevSelectedSchools.filter(s => s !== school)
+//         );
+//     };
+
+//     // Maneja los cambios en el campo de búsqueda
+//     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setSearchTerm(event.target.value.toLowerCase());
+//     };
+
+//     // Filtra los datos según los periodos, escuelas seleccionados y el término de búsqueda
+//     const filteredData = data.filter(item =>
+//         (selectedPeriods.length === 0 || selectedPeriods.includes(item.periodo)) &&
+//         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela)) &&
+//         item.docente.toLowerCase().includes(searchTerm)
+//     );
+
+//     // Maneja el cambio de página
+//     const handleChangePage = (__event: unknown, newPage: number) => {
+//         setPage(newPage);
+//     };
+
+//     // Maneja el cambio de la cantidad de filas por página
+//     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setRowsPerPage(parseInt(event.target.value, 10));
+//         setPage(0);
+//     };
+
+//     return (
+//         <Grid container spacing={3}>
+//             <Grid item xs={12} md={8}>
+//                 <TableContainer component={Paper}>
+//                     <Box sx={{
+//                         backgroundColor: 'red', padding: 2, display: 'flex',
+//                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
+//                         borderTopRightRadius: 10
+//                     }}>
+//                         <Typography variant="h6" sx={{ color: 'white' }}>
+//                             Docentes de la Facultad de Ingeniería
+//                         </Typography>
+//                         <TextField
+//                             placeholder="Buscar Docente"
+//                             variant="outlined"
+//                             value={searchTerm}
+//                             onChange={handleSearchChange}
+//                             InputProps={{
+//                                 endAdornment: (
+//                                     <InputAdornment position="start">
+//                                         <SearchIcon sx={{ color: 'gray' }} />
+//                                     </InputAdornment>
+//                                 ),
+//                             }}
+//                             sx={{ backgroundColor: 'white', borderRadius: 1 }}
+//                         />
+//                     </Box>
+//                     <Table>
+//                         <TableHead sx={{ backgroundColor: 'white' }}>
+//                             <TableRow>
+//                                 {columns.map((col, index) => (
+//                                     <TableCell key={index} sx={{ color: 'black' }}>{col.headerName}</TableCell>
+//                                 ))}
+//                                 <TableCell sx={{ color: 'black' }}>Acciones</TableCell> {/* Columna fija para acciones */}
+//                             </TableRow>
+//                         </TableHead>
+//                         <TableBody sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                             {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+//                                 <TableRow key={index}>
+//                                     {columns.map((col, colIndex) => (
+//                                         <TableCell key={colIndex}>{row[col.fieldName]}</TableCell>
+//                                     ))}
+//                                     <TableCell>
+//                                         <Button variant="contained" sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius:10 }}>Ver más</Button>
+//                                     </TableCell>
+//                                 </TableRow>
+//                             ))}
+//                         </TableBody>
+//                         <TableFooter sx={{borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
+//                             <TableRow>
+//                                 <TablePagination
+//                                     rowsPerPageOptions={[5, 10]}
+//                                     colSpan={columns.length + 1} // Ajusta el colspan según las columnas
+//                                     count={filteredData.length}
+//                                     rowsPerPage={rowsPerPage}
+//                                     page={page}
+//                                     onPageChange={handleChangePage}
+//                                     onRowsPerPageChange={handleChangeRowsPerPage}
+//                                     labelRowsPerPage="Filas por página"
+//                                 />
+//                             </TableRow>
+//                         </TableFooter>
+//                     </Table>
+//                 </TableContainer>
+//             </Grid>
+
+//             <Grid item xs={12} md={4}>
+//                 <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                     <Box sx={{ backgroundColor: 'red', padding: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+//                         <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>Filtros</Typography>
+//                     </Box>
+//                     <Grid container sx={{ padding: 2 }}>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Período</Typography>
+//                             {uniquePeriods.map(period => (
+//                                 <FormControlLabel
+//                                     key={period}
+//                                     control={<Checkbox name={period} onChange={handlePeriodChange} />}
+//                                     label={period}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Escuela</Typography>
+//                             {uniqueSchools.map(school => (
+//                                 <FormControlLabel
+//                                     key={school}
+//                                     control={<Checkbox name={school} onChange={handleSchoolChange} />}
+//                                     label={school}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                     </Grid>
+//                 </Paper>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+
+// export default TableComponent;
+
+
+
+// import React, { useState } from 'react';
+// import {
+//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+//     TextField, Checkbox, FormControlLabel, Button, Grid, Box, Typography,
+//     InputAdornment, TableFooter, TablePagination
+// } from '@mui/material';
+// import SearchIcon from '@mui/icons-material/Search';
+// import { AvergaGradesRegistersItem, AvergaGradesRegistersResponse } from '../types/TeacherTypes';
+
+// export interface ColumnConfig {
+//     headerName: string;
+//     fieldName: keyof AvergaGradesRegistersItem; // Hace referencia a las claves del objeto de datos
+// }
+
+// interface TableComponentProps {
+//     columns: ColumnConfig[];
+//     data: AvergaGradesRegistersResponse;  // Nuevo prop para los datos
+// }
+
+// const TableComponent: React.FC<TableComponentProps> = ({ columns, data }) => {
+//     const [filteredData, setFilteredData] = useState(data);
+//     const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+//     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [page, setPage] = useState(0);
+//     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+//     // Extrae los períodos y escuelas únicos de los datos
+//     const uniquePeriods = Array.from(new Set(data.map(item => item.periodo)));
+//     const uniqueSchools = Array.from(new Set(data.map(item => item.escuela)));
+
+//     // Maneja los cambios en los filtros de periodo
+//     const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const period = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedPeriods(prevSelectedPeriods =>
+//             isChecked
+//                 ? [...prevSelectedPeriods, period]
+//                 : prevSelectedPeriods.filter(p => p !== period)
+//         );
+//     };
+
+//     // Maneja los cambios en los filtros de escuela
+//     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const school = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedSchools(prevSelectedSchools =>
+//             isChecked
+//                 ? [...prevSelectedSchools, school]
+//                 : prevSelectedSchools.filter(s => s !== school)
+//         );
+//     };
+
+//     // Maneja los cambios en el campo de búsqueda
+//     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setSearchTerm(event.target.value.toLowerCase());
+//     };
+
+//     // Filtra los datos según los periodos, escuelas seleccionados y el término de búsqueda
+//     const filteredResults = data.filter(item =>
+//         (selectedPeriods.length === 0 || selectedPeriods.includes(item.periodo)) &&
+//         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela)) &&
+//         item.docente_nombre.toLowerCase().includes(searchTerm)
+//     );
+
+//     // Maneja el cambio de página
+//     const handleChangePage = (__event: unknown, newPage: number) => {
+//         setPage(newPage);
+//     };
+
+//     // Maneja el cambio de la cantidad de filas por página
+//     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setRowsPerPage(parseInt(event.target.value, 10));
+//         setPage(0);
+//     };
+
+//     return (
+//         <Grid container spacing={3}>
+//             <Grid item xs={12} md={8}>
+//                 <TableContainer component={Paper}>
+//                     <Box sx={{
+//                         backgroundColor: 'red', padding: 2, display: 'flex',
+//                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
+//                         borderTopRightRadius: 10
+//                     }}>
+//                         <Typography variant="h6" sx={{ color: 'white' }}>
+//                             Docentes de la Facultad de Ingeniería
+//                         </Typography>
+//                         <TextField
+//                             placeholder="Buscar Docente"
+//                             variant="outlined"
+//                             value={searchTerm}
+//                             onChange={handleSearchChange}
+//                             InputProps={{
+//                                 endAdornment: (
+//                                     <InputAdornment position="start">
+//                                         <SearchIcon sx={{ color: 'gray' }} />
+//                                     </InputAdornment>
+//                                 ),
+//                             }}
+//                             sx={{ backgroundColor: 'white', borderRadius: 1 }}
+//                         />
+//                     </Box>
+//                     <Table>
+//                         <TableHead sx={{ backgroundColor: 'white' }}>
+//                             <TableRow>
+//                                 {columns.map((col, index) => (
+//                                     <TableCell key={index} sx={{ color: 'black' }}>{col.headerName}</TableCell>
+//                                 ))}
+//                                 <TableCell sx={{ color: 'black' }}>Acciones</TableCell> {/* Columna fija para acciones */}
+//                             </TableRow>
+//                         </TableHead>
+//                         <TableBody sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                             {filteredResults.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+//                                 <TableRow key={index}>
+//                                     {columns.map((col, colIndex) => (
+//                                         <TableCell key={colIndex}>{row[col.fieldName]}</TableCell>
+//                                     ))}
+//                                     <TableCell>
+//                                         <Button variant="contained" sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius:10 }}>Ver más</Button>
+//                                     </TableCell>
+//                                 </TableRow>
+//                             ))}
+//                         </TableBody>
+//                         <TableFooter sx={{borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
+//                             <TableRow>
+//                                 <TablePagination
+//                                     rowsPerPageOptions={[5, 10]}
+//                                     colSpan={columns.length + 1} // Ajusta el colspan según las columnas
+//                                     count={filteredResults.length}
+//                                     rowsPerPage={rowsPerPage}
+//                                     page={page}
+//                                     onPageChange={handleChangePage}
+//                                     onRowsPerPageChange={handleChangeRowsPerPage}
+//                                     labelRowsPerPage="Filas por página"
+//                                 />
+//                             </TableRow>
+//                         </TableFooter>
+//                     </Table>
+//                 </TableContainer>
+//             </Grid>
+
+//             <Grid item xs={12} md={4}>
+//                 <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                     <Box sx={{ backgroundColor: 'red', padding: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+//                         <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>Filtros</Typography>
+//                     </Box>
+//                     <Grid container sx={{ padding: 2 }}>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Período</Typography>
+//                             {uniquePeriods.map(period => (
+//                                 <FormControlLabel
+//                                     key={period}
+//                                     control={<Checkbox name={period} onChange={handlePeriodChange} />}
+//                                     label={period}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Escuela</Typography>
+//                             {uniqueSchools.map(school => (
+//                                 <FormControlLabel
+//                                     key={school}
+//                                     control={<Checkbox name={school} onChange={handleSchoolChange} />}
+//                                     label={school}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                     </Grid>
+//                 </Paper>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+
+// export default TableComponent;
+
+// import React, { useState } from 'react';
+// import {
+//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+//     TextField, Checkbox, FormControlLabel, Button, Grid, Box, Typography,
+//     InputAdornment, TableFooter, TablePagination
+// } from '@mui/material';
+// import SearchIcon from '@mui/icons-material/Search';
+// import { AvergaGradesRegistersItem, AvergaGradesRegistersResponse } from '../types/TeacherTypes';
+
+// export interface ColumnConfig {
+//     headerName: string;
+//     fieldName: keyof AvergaGradesRegistersItem; // Hace referencia a las claves del objeto de datos
+// }
+
+// interface TableComponentProps {
+//     columns: ColumnConfig[];
+//     data: AvergaGradesRegistersResponse;  // Nuevo prop para los datos
+// }
+
+// const TableComponent: React.FC<TableComponentProps> = ({ columns = [], data = [] }) => {
+//     const [filteredData, setFilteredData] = useState<AvergaGradesRegistersResponse>(data);
+//     const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+//     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [page, setPage] = useState(0);
+//     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+//     // Extrae los períodos y escuelas únicos de los datos
+//     const uniquePeriods = Array.from(new Set((data || []).map(item => item.periodo)));
+//     const uniqueSchools = Array.from(new Set((data || []).map(item => item.escuela)));
+
+//     // Maneja los cambios en los filtros de periodo
+//     const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const period = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedPeriods(prevSelectedPeriods =>
+//             isChecked
+//                 ? [...prevSelectedPeriods, period]
+//                 : prevSelectedPeriods.filter(p => p !== period)
+//         );
+//     };
+
+//     // Maneja los cambios en los filtros de escuela
+//     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const school = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedSchools(prevSelectedSchools =>
+//             isChecked
+//                 ? [...prevSelectedSchools, school]
+//                 : prevSelectedSchools.filter(s => s !== school)
+//         );
+//     };
+
+//     // Maneja los cambios en el campo de búsqueda
+//     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setSearchTerm(event.target.value.toLowerCase());
+//     };
+
+//     // Filtra los datos según los periodos, escuelas seleccionados y el término de búsqueda
+//     const filteredResults = (data || []).filter(item =>
+//         (selectedPeriods.length === 0 || selectedPeriods.includes(item.periodo)) &&
+//         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela)) &&
+//         item.docente_nombre.toLowerCase().includes(searchTerm)
+//     );
+
+//     // Maneja el cambio de página
+//     const handleChangePage = (__event: unknown, newPage: number) => {
+//         setPage(newPage);
+//     };
+
+//     // Maneja el cambio de la cantidad de filas por página
+//     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setRowsPerPage(parseInt(event.target.value, 10));
+//         setPage(0);
+//     };
+
+//     // Función para formatear los datos de la celda
+//     const formatCellData = (data: any) => {
+//         if (typeof data === 'string' || typeof data === 'number') {
+//             return data;
+//         }
+//         return '';
+//     };
+
+//     return (
+//         <Grid container spacing={3}>
+//             <Grid item xs={12} md={8}>
+//                 <TableContainer component={Paper}>
+//                     <Box sx={{
+//                         backgroundColor: 'red', padding: 2, display: 'flex',
+//                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
+//                         borderTopRightRadius: 10
+//                     }}>
+//                         <Typography variant="h6" sx={{ color: 'white' }}>
+//                             Docentes de la Facultad de Ingeniería
+//                         </Typography>
+//                         <TextField
+//                             placeholder="Buscar Docente"
+//                             variant="outlined"
+//                             value={searchTerm}
+//                             onChange={handleSearchChange}
+//                             InputProps={{
+//                                 endAdornment: (
+//                                     <InputAdornment position="start">
+//                                         <SearchIcon sx={{ color: 'gray' }} />
+//                                     </InputAdornment>
+//                                 ),
+//                             }}
+//                             sx={{ backgroundColor: 'white', borderRadius: 1 }}
+//                         />
+//                     </Box>
+//                     <Table>
+//                         <TableHead sx={{ backgroundColor: 'white' }}>
+//                             <TableRow>
+//                                 {columns && columns.map((col, index) => (
+//                                     <TableCell key={index} sx={{ color: 'black' }}>{col.headerName}</TableCell>
+//                                 ))}
+//                                 <TableCell sx={{ color: 'black' }}>Acciones</TableCell> {/* Columna fija para acciones */}
+//                             </TableRow>
+//                         </TableHead>
+//                         <TableBody sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                             {filteredResults.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+//                                 <TableRow key={index}>
+//                                     {columns && columns.map((col, colIndex) => (
+//                                         <TableCell key={colIndex}>{formatCellData(row[col.fieldName])}</TableCell>
+//                                     ))}
+//                                     <TableCell>
+//                                         <Button variant="contained" sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius:10 }}>Ver más</Button>
+//                                     </TableCell>
+//                                 </TableRow>
+//                             ))}
+//                         </TableBody>
+//                         <TableFooter sx={{borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
+//                             <TableRow>
+//                                 <TablePagination
+//                                     rowsPerPageOptions={[5, 10]}
+//                                     colSpan={columns.length + 1} // Ajusta el colspan según las columnas
+//                                     count={filteredResults.length}
+//                                     rowsPerPage={rowsPerPage}
+//                                     page={page}
+//                                     onPageChange={handleChangePage}
+//                                     onRowsPerPageChange={handleChangeRowsPerPage}
+//                                     labelRowsPerPage="Filas por página"
+//                                 />
+//                             </TableRow>
+//                         </TableFooter>
+//                     </Table>
+//                 </TableContainer>
+//             </Grid>
+
+//             <Grid item xs={12} md={4}>
+//                 <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                     <Box sx={{ backgroundColor: 'red', padding: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+//                         <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>Filtros</Typography>
+//                     </Box>
+//                     <Grid container sx={{ padding: 2 }}>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Período</Typography>
+//                             {uniquePeriods.map(period => (
+//                                 <FormControlLabel
+//                                     key={period}
+//                                     control={<Checkbox name={period} onChange={handlePeriodChange} />}
+//                                     label={period}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Escuela</Typography>
+//                             {uniqueSchools.map(school => (
+//                                 <FormControlLabel
+//                                     key={school}
+//                                     control={<Checkbox name={school} onChange={handleSchoolChange} />}
+//                                     label={school}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                     </Grid>
+//                 </Paper>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+
+// export default TableComponent;
+
+
+
+//lasta version
+
+// import React, { useState, useEffect } from 'react';
+// import {
+//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+//     TextField, Checkbox, FormControlLabel, Button, Grid, Box, Typography,
+//     InputAdornment, TableFooter, TablePagination
+// } from '@mui/material';
+// import SearchIcon from '@mui/icons-material/Search';
+// import { AvergaGradesRegistersItem, AvergaGradesRegistersResponse } from '../types/TeacherTypes';
+// import { useNavigate } from 'react-router-dom';
+
+// export interface ColumnConfig {
+//     headerName: string;
+//     fieldName: keyof AvergaGradesRegistersItem; 
+// }
+
+// interface TableComponentProps {
+//     name: string;
+//     columns: ColumnConfig[];
+//     data: AvergaGradesRegistersResponse;
+// }
+
+// const TableComponent: React.FC<TableComponentProps> = ({ name, columns = [], data = [] }) => {
+//     const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+//     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+//     const [searchTerm, setSearchTerm] = useState('');
+//     const [page, setPage] = useState(0);
+//     const [rowsPerPage, setRowsPerPage] = useState(5);
+//     const [loading, setLoading] = useState(true);
+
+//     const navigate = useNavigate(); // Hook de navegación
+
+//     useEffect(() => {
+//         if (data && data.length > 0) {
+//             setLoading(false);
+//         } else if (data === null) {
+//             setLoading(true);
+//         }
+//     }, [data]);
+
+    // // Función para manejar la redirección
+    // const handleViewMore = (id: number, nombre: string) => {
+    //     navigate(`/teacher-viewer/${id}`, { state: { nombre } });
+    // };
+
+//     // Extrae los períodos y escuelas únicos de los datos
+//     const uniquePeriods = Array.from(new Set((data || []).map(item => item.periodo)));
+//     const uniqueSchools = Array.from(new Set((data || []).map(item => item.escuela)));
+
+//     // Maneja los cambios en los filtros de periodo
+//     const handlePeriodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const period = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedPeriods(prevSelectedPeriods =>
+//             isChecked
+//                 ? [...prevSelectedPeriods, period]
+//                 : prevSelectedPeriods.filter(p => p !== period)
+//         );
+//     };
+
+//     // Maneja los cambios en los filtros de escuela
+//     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         const school = event.target.name;
+//         const isChecked = event.target.checked;
+
+//         setSelectedSchools(prevSelectedSchools =>
+//             isChecked
+//                 ? [...prevSelectedSchools, school]
+//                 : prevSelectedSchools.filter(s => s !== school)
+//         );
+//     };
+
+    // // Maneja los cambios en el campo de búsqueda
+    // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setSearchTerm(event.target.value.toLowerCase());
+    // };
+
+//     // Filtra los datos según los periodos, escuelas seleccionados y el término de búsqueda
+//     const filteredResults = (data || []).filter(item =>
+//         (selectedPeriods.length === 0 || selectedPeriods.includes(item.periodo)) &&
+//         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela)) &&
+//         item.docente_nombre.toLowerCase().includes(searchTerm)
+//     );
+
+    // // Maneja el cambio de página
+    // const handleChangePage = (__event: unknown, newPage: number) => {
+    //     setPage(newPage);
+    // };
+
+    // // Maneja el cambio de la cantidad de filas por página
+    // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setRowsPerPage(parseInt(event.target.value, 10));
+    //     setPage(0);
+    // };
+
+//     // Función para formatear los datos de la celda
+//     const formatCellData = (data: any) => {
+//         if (typeof data === 'number') {
+//             return data.toFixed(2); // Redondea a dos cifras decimales
+//         }
+//         if (typeof data === 'string') {
+//             return data;
+//         }
+//         return '';
+//     };
+
+//     return (
+//         <Grid container spacing={3}>
+//             <Grid item xs={12} md={8}>
+                // <TableContainer component={Paper}>
+                //     <Box sx={{
+                //         backgroundColor: 'red', padding: 2, display: 'flex',
+                //         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
+                //         borderTopRightRadius: 10
+                //     }}>
+                //         <Typography variant="h6" sx={{ color: 'white' }}>
+                //             {name}
+                //         </Typography>
+                //         <TextField
+                //             placeholder="Buscar Docente"
+                //             variant="outlined"
+                //             value={searchTerm}
+                //             onChange={handleSearchChange}
+                //             InputProps={{
+                //                 endAdornment: (
+                //                     <InputAdornment position="start">
+                //                         <SearchIcon sx={{ color: 'gray' }} />
+                //                     </InputAdornment>
+                //                 ),
+                //             }}
+                //             sx={{ backgroundColor: 'white', borderRadius: 1 }}
+                //         />
+                //     </Box>
+                //     {loading ? (
+                //         <Box sx={{ padding: 2, textAlign: 'center' }}>
+                //             <Typography variant="h6">Obteniendo datos...</Typography>
+                //         </Box>
+                //     ) : (
+                //         <>
+                //             <Table>
+                //                 <TableHead sx={{ backgroundColor: 'white' }}>
+                //                     <TableRow>
+                //                         {columns && columns.map((col, index) => (
+                //                             <TableCell
+                //                                 key={index}
+                //                                 sx={{
+                //                                     color: 'black',
+                //                                     textAlign: 'center',
+                //                                     whiteSpace: 'normal',   // Permite que el texto se ajuste en múltiples líneas
+                //                                     wordBreak: 'break-word', // Permite que las palabras largas se rompan
+                //                                     maxWidth: '100px', // Establece un ancho máximo para la columna
+                //                                     overflow: 'hidden', // Oculta el desbordamiento
+                //                                     textOverflow: 'ellipsis' // Agrega puntos suspensivos si el texto es demasiado largo
+                //                                 }}
+                //                             >
+                //                                 {col.headerName}
+                //                             </TableCell>
+                //                         ))}
+                //                         <TableCell sx={{maxWidth: '80px', textAlign: 'center'}}>Acciones</TableCell> 
+                //                     </TableRow>
+                //                 </TableHead>
+                //                 <TableBody sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+                //                     {filteredResults.length > 0 ? (
+                //                         filteredResults.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                //                             <TableRow key={index}>
+                //                                 {columns && columns.map((col, colIndex) => (
+                //                                     <TableCell
+                //                                         key={colIndex}
+                //                                         sx={{
+                //                                             textAlign: 'center',
+                //                                             maxWidth: '100px', // Establece un ancho máximo para la columna
+                //                                             overflow: 'hidden', // Oculta el desbordamiento
+                //                                             textOverflow: 'ellipsis' // Agrega puntos suspensivos si el texto es demasiado largo
+                //                                         }}
+                //                                     >
+                //                                         {formatCellData(row[col.fieldName])}
+                //                                     </TableCell>
+                //                                 ))}
+                //                                 <TableCell sx={{ textAlign: 'center' }}>
+                //                                     <Button 
+                //                                         variant="contained" 
+                //                                         sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius:10 }}
+                //                                         onClick={() => handleViewMore(row.docente_id,row.docente_nombre)}
+                //                                     >
+                //                                         Ver más
+                //                                     </Button>
+                //                                 </TableCell>
+                //                             </TableRow>
+                //                         ))
+                //                     ) : (
+                //                         <TableRow>
+                //                             <TableCell colSpan={columns.length + 1} sx={{ textAlign: 'center' }}>No hay datos disponibles</TableCell>
+                //                         </TableRow>
+                //                     )}
+                //                 </TableBody>
+                //                 <TableFooter sx={{borderBottomLeftRadius:10, borderBottomRightRadius:10}}>
+                //                     <TableRow>
+                //                         <TablePagination
+                //                             rowsPerPageOptions={[5, 10]}
+                //                             colSpan={columns.length + 1} // Ajusta el colspan según las columnas
+                //                             count={filteredResults.length}
+                //                             rowsPerPage={rowsPerPage}
+                //                             page={page}
+                //                             onPageChange={handleChangePage}
+                //                             onRowsPerPageChange={handleChangeRowsPerPage}
+                //                             labelRowsPerPage="Filas por página"
+                //                         />
+                //                     </TableRow>
+                //                 </TableFooter>
+                //             </Table>
+                //         </>
+                //     )}
+                // </TableContainer>
+//             </Grid>
+
+//             <Grid item xs={12} md={4}>
+//                 <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+//                     <Box sx={{ backgroundColor: 'red', padding: 1, borderTopLeftRadius: 10, borderTopRightRadius: 10 }}>
+//                         <Typography variant="h6" sx={{ color: 'white', textAlign: 'center' }}>Filtros</Typography>
+//                     </Box>
+//                     <Grid container sx={{ padding: 2 }}>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Período</Typography>
+//                             {uniquePeriods.map(period => (
+//                                 <FormControlLabel
+//                                     key={period}
+//                                     control={<Checkbox name={period} onChange={handlePeriodChange} />}
+//                                     label={period}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                         <Grid item xs={6}>
+//                             <Typography variant="body1" sx={{ marginBottom: 2 }}>Escuela</Typography>
+//                             {uniqueSchools.map(school => (
+//                                 <FormControlLabel
+//                                     key={school}
+//                                     control={<Checkbox name={school} onChange={handleSchoolChange} />}
+//                                     label={school}
+//                                 />
+//                             ))}
+//                         </Grid>
+//                     </Grid>
+//                 </Paper>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+
+// export default TableComponent;

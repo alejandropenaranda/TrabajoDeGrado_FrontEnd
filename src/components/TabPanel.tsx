@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Tabs, Tab, Box, Typography } from '@mui/material';
+import { Grid, Tabs, Tab, Box } from '@mui/material';
 import WordCloud from '../components/WordCloud';
 import { getWordCloud } from '../services/wordCloud';
 import GradesBarChart from '../components/BarChart'
 import { getCuantBarChart, getCualBarChart } from '../services/BarCharts'
 import { getBestWorstComment } from '../services/BestWorstComment';
 import CommentViewer from './CommentViewer';
-import { getAverageGrades } from '../services/AverageGrades';
+import { getAverageGrades, getAverageGradesTeacher } from '../services/AverageGrades';
 import GradesCards from './GradesCards';
+import TableComponent, { ColumnConfig } from './Table';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -67,10 +68,9 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
   const [cualBarChartData, setcualBarChartData] = useState<any>(null);
   const [bestWorstCommentData, setBestWorstCommentData] = useState<any>(null);
   const [averageGradesData, setAverageGradesData] = useState<any>(null)
-  // Aqui poner tantos use estate como componentes que hagan peticiones tenga en mis tabs
+  const [averageGradesRegistersData, setAverageGradesRegistersData] = useState<any>(null)
 
   useEffect(() => {
-    // Aqui Se definen todas las funciones asincronas de los componentes de las tabs y luego se llaman
     const fetchWordCloudData = async () => {
       const data = await getWordCloud(token, id);
       setWordCloudData(data);
@@ -96,12 +96,27 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
       setAverageGradesData(data);
     };
 
+    const fetchAverageGradesRegistersData = async () => {
+      const data = await getAverageGradesTeacher(token, id);
+      setAverageGradesRegistersData(data);
+    };
+
     fetchWordCloudData();
     fetchCuantBarChartData();
     fetchCualBarChartData();
     fetchBestWorstCommentData();
     fetchAverageGradesData();
+    fetchAverageGradesRegistersData();
   }, [token, id]);
+
+  const columns: ColumnConfig[] = [
+    { headerName: 'Materia', fieldName: 'materia.nombre' },
+    { headerName: 'Código materia', fieldName: 'materia.codigo' },
+    { headerName: 'Escuela', fieldName: 'escuela' },
+    { headerName: 'Calificación cualitativa promedio', fieldName: 'promedio_cual' },
+    { headerName: 'Calificación cuantitativa promedio', fieldName: 'promedio_cuant' },
+    { headerName: 'Período', fieldName: 'periodo' },
+];
 
   const handleChange = (__event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -131,6 +146,7 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         <Tab label="Gran nombre de la tab" {...a11yProps(0)}/>
         <Tab label="Tab 2" {...a11yProps(1)} />
         <Tab label="Tab 3" {...a11yProps(2)} />
+        <Tab label="Tab 4" {...a11yProps(3)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         {wordCloudData && <WordCloud data={wordCloudData} />}
@@ -146,6 +162,9 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         <Grid sx={{mt: '20px'}}>
           {averageGradesData && <GradesCards data={averageGradesData}/>}
         </Grid>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+          {averageGradesRegistersData && <TableComponent name={'Cursos dictados por el docente'} columns={columns} data={averageGradesRegistersData} showSchoolFilter={false} showSubjectFilter={true}/>}
       </TabPanel>
     </Box>
   );

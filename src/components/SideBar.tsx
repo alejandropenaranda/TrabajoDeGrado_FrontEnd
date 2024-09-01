@@ -24,6 +24,7 @@ import { IoSchoolOutline } from "react-icons/io5";
 import UserHeaderCard from './UserHeaderCard.tsx';
 import { useAuth } from '../auth/AuthProvider.tsx';
 import { useNavigate } from 'react-router-dom';
+import { APP_URL } from '../auth/constants.ts';
 
 const drawerWidth = 240;
 
@@ -123,6 +124,7 @@ export default function SideBar({ children }: SideBarProps) {
   const user = auth.getUser();
   const navigate = useNavigate(); // Crear instancia de useNavigate
 
+  console.log("user del sidebar", user)
   const getRole = () => {
     if (!user) return '';
     if (user.is_admin) return 'Admin';
@@ -173,7 +175,7 @@ export default function SideBar({ children }: SideBarProps) {
             direction="row"
             justifyContent="space-between"
             alignItems="center" sx={{ pl: '30px' }}>
-            <img src='./headerUnivalle.png' height={50} />
+            <img src={`${APP_URL}/headerUnivalle.png`} height={50} />
             <UserHeaderCard />
           </Grid>
         </Toolbar>
