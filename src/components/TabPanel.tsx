@@ -9,6 +9,9 @@ import CommentViewer from './CommentViewer';
 import { getAverageGrades, getAverageGradesTeacher } from '../services/AverageGrades';
 import GradesCards from './GradesCards';
 import TableComponent, { ColumnConfig } from './Table';
+import { getCualFortDeb, getCuantFortDeb } from '../services/FortDeb';
+import CuantFortDeb from './CuantFortDebViewer';
+import CualFortDeb from './CualFortDebViewer';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -67,8 +70,10 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
   const [cuantBarChartData, setcuantBarChartData] = useState<any>(null);
   const [cualBarChartData, setcualBarChartData] = useState<any>(null);
   const [bestWorstCommentData, setBestWorstCommentData] = useState<any>(null);
-  const [averageGradesData, setAverageGradesData] = useState<any>(null)
-  const [averageGradesRegistersData, setAverageGradesRegistersData] = useState<any>(null)
+  const [averageGradesData, setAverageGradesData] = useState<any>(null);
+  const [averageGradesRegistersData, setAverageGradesRegistersData] = useState<any>(null);
+  const [cuantFortDebData, setCuantFortDebData] = useState<any>(null);
+  const [cualFortDebData, setCualFortDebData] = useState<any>(null);
 
   useEffect(() => {
     const fetchWordCloudData = async () => {
@@ -101,13 +106,27 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
       setAverageGradesRegistersData(data);
     };
 
+    const fetchCuantFortDebData = async () => {
+      const data = await getCuantFortDeb(token, id);
+      setCuantFortDebData(data);
+    };
+
+    const fetchCualFortDebData = async () => {
+      const data = await getCualFortDeb(token, id);
+      setCualFortDebData(data);
+    };
+
     fetchWordCloudData();
     fetchCuantBarChartData();
     fetchCualBarChartData();
     fetchBestWorstCommentData();
     fetchAverageGradesData();
     fetchAverageGradesRegistersData();
+    fetchCuantFortDebData();
+    fetchCualFortDebData();
   }, [token, id]);
+
+  console.log("cuali: ",cualFortDebData)
 
   const columns: ColumnConfig[] = [
     { headerName: 'Materia', fieldName: 'materia.nombre' },
@@ -161,6 +180,12 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         </Grid>
         <Grid sx={{mt: '20px'}}>
           {averageGradesData && <GradesCards data={averageGradesData}/>}
+        </Grid>
+        <Grid>
+          {cuantFortDebData && <CuantFortDeb valoraciones={cuantFortDebData.valoraciones}/>}
+        </Grid>
+        <Grid>
+          {cualFortDebData && <CualFortDeb valoraciones={cualFortDebData.valoraciones}/>}
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={3}>

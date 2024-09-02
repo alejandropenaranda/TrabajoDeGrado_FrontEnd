@@ -63,3 +63,20 @@ export interface AvergaGradesRegistersItem {
 }
 
 export type AvergaGradesRegistersResponse = AvergaGradesRegistersItem[];
+
+
+export interface FortDebResponse {
+    id: number;
+    docente_id:number;
+    valoraciones: object;
+}
+
+export interface CualFortDebResponse {
+    id: number;
+    docente_id:number;
+    valoraciones: string;
+}
+
+export interface FortDebError{
+    error: string;
+}
