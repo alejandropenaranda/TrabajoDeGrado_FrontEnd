@@ -45,8 +45,7 @@ const CuantFortDeb: React.FC<CuantFortDebProps> = ({ valoraciones }) => {
                 borderRadius: '10px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 padding: 3,
-                backgroundColor: 'white',
-                mt:5
+                backgroundColor: 'white'
             }}
         >
             <Typography variant="h6" align="center" fontWeight="bold" gutterBottom>

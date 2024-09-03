@@ -5,7 +5,7 @@ export default function DirectorDashboard() {
     return (
         <>
             <SideBar>
-                <Grid>
+                <Grid sx={{ }}>
                     <h1>Director dashboard</h1>
                 </Grid>
             </SideBar>

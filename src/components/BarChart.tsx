@@ -30,7 +30,7 @@ const GradesBarChart: React.FC<GradesBarChartProps> = ({ data, nombre }) => {
       borderRadius: '8px',
       padding: '16px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-      backgroundColor: 'white',
+      backgroundColor: 'white'
     }}>
       <Grid item xs={12}>
         <Typography variant="h6" sx={titleStyles}>

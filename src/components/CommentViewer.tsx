@@ -8,12 +8,12 @@ interface CommentViewerProps {
 
 const CommentViewer: React.FC<CommentViewerProps> = ({ data }) => {
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-                <Card sx={{ borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+                <Card sx={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '16px', textAlign: 'center' }}>
-                            Mejor Comentario
+                            Comentario con mayor valoración
                         </Typography>
                         <Typography variant="body1"><strong>Materia:</strong> {data.mejor.materia.nombre}</Typography>
                         <Typography variant="body1"><strong>Período:</strong> {data.mejor.periodo}</Typography>
@@ -24,10 +24,10 @@ const CommentViewer: React.FC<CommentViewerProps> = ({ data }) => {
             </Grid>
 
             <Grid item xs={12} md={6}>
-                <Card sx={{ borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+                <Card sx={{ borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '16px', textAlign: 'center' }}>
-                            Peor Comentario
+                            Comentario con menor valoración
                         </Typography>
                         <Typography variant="body1"><strong>Materia:</strong> {data.peor.materia.nombre}</Typography>
                         <Typography variant="body1"><strong>Período:</strong> {data.peor.periodo}</Typography>

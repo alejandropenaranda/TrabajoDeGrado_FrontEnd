@@ -226,5 +226,3 @@ export default function SideBar({ children }: SideBarProps) {
     </Box>
   );
 }
-
-

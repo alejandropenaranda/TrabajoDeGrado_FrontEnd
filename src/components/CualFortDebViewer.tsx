@@ -36,14 +36,12 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 padding: 3,
                 backgroundColor: 'white',
-                mt: 5
             }}
         >
             <Typography variant="h6" align="center" fontWeight="bold" gutterBottom>
                 Fortalezas y Debilidades cualitativas del docente a partir de los comentarios de las evaluaciones docente
             </Typography>
 
-            {/* Fila de categorías de calificación */}
             <Grid container spacing={1} sx={{ marginBottom: 2,  mt:2  }}>
                 <Grid item xs={12}>
                     <Grid container spacing={1} justifyContent="center">
@@ -66,9 +64,7 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                 </Grid>
             </Grid>
 
-            {/* Sección de Fortalezas y Debilidades */}
             <Grid container spacing={3}>
-                {/* Fortalezas */}
                 <Grid item xs={12} md={6}>
                     <Typography variant="h6" fontWeight="bold" gutterBottom>
                         Fortalezas
@@ -96,10 +92,9 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                     })}
                 </Grid>
 
-                {/* Debilidades */}
                 <Grid item xs={12} md={6}>
                     <Typography variant="h6" fontWeight="bold" gutterBottom>
-                        Debilidades
+                        Oportunidades de mejora
                     </Typography>
                     {Object.entries(valoraciones.debilidades).map(([key, value]) => {
                         const { label, color } = getTagProps(value);

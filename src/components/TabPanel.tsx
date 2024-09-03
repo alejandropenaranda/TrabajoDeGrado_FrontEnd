@@ -33,8 +33,8 @@ function TabPanel(props: TabPanelProps) {
       {...other}
       sx={{
         backgroundColor: '#FFFFFF',
-        height: '100vh', // Altura específica
         overflow: 'hidden', // Evitar desbordamientos
+        height: '100%',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Sombra alrededor del panel
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
@@ -44,7 +44,7 @@ function TabPanel(props: TabPanelProps) {
       }}
     >
       {value === index && (
-        <Grid sx={{ height: '100%', gap: '10px'}}>
+        <Grid sx={{ height: '100%', gap: '10px' }}>
           {children}
         </Grid>
       )}
@@ -82,13 +82,13 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
     };
 
     const fetchCuantBarChartData = async () => {
-        const data = await getCuantBarChart(token, id);
-        setcuantBarChartData(data);
-      };
+      const data = await getCuantBarChart(token, id);
+      setcuantBarChartData(data);
+    };
 
     const fetchCualBarChartData = async () => {
-        const data = await getCualBarChart(token, id);
-        setcualBarChartData(data);
+      const data = await getCualBarChart(token, id);
+      setcualBarChartData(data);
     };
 
     const fetchBestWorstCommentData = async () => {
@@ -126,7 +126,7 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
     fetchCualFortDebData();
   }, [token, id]);
 
-  console.log("cuali: ",cualFortDebData)
+  console.log("cuali: ", cualFortDebData)
 
   const columns: ColumnConfig[] = [
     { headerName: 'Materia', fieldName: 'materia.nombre' },
@@ -135,7 +135,7 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
     { headerName: 'Calificación cualitativa promedio', fieldName: 'promedio_cual' },
     { headerName: 'Calificación cuantitativa promedio', fieldName: 'promedio_cuant' },
     { headerName: 'Período', fieldName: 'periodo' },
-];
+  ];
 
   const handleChange = (__event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -162,34 +162,68 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
           },
         }}
       >
-        <Tab label="Gran nombre de la tab" {...a11yProps(0)}/>
-        <Tab label="Tab 2" {...a11yProps(1)} />
-        <Tab label="Tab 3" {...a11yProps(2)} />
-        <Tab label="Tab 4" {...a11yProps(3)} />
+        <Tab label="Calificaciones generales del docente" {...a11yProps(0)} />
+        <Tab label="Estadisticas del docente" {...a11yProps(1)} />
+        <Tab label="Análisis de Desempeño" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {wordCloudData && <WordCloud data={wordCloudData} />}
+        <Grid container direction="column" gap={3}>
+          {averageGradesData && (
+            <Grid item xs={12}>
+              <GradesCards data={averageGradesData} />
+            </Grid>
+          )}
+          {averageGradesRegistersData && (
+            <Grid item xs={12}>
+              <TableComponent 
+                name="Cursos dictados por el docente" 
+                columns={columns} 
+                data={averageGradesRegistersData} 
+                showSchoolFilter={false} 
+                showSubjectFilter={true} 
+              />
+            </Grid>
+          )}
+        </Grid>
       </TabPanel>
+
       <TabPanel value={value} index={1}>
-        {cuantBarChartData && <GradesBarChart data={cuantBarChartData} nombre='Calificación Cuantitativa' />}
-        {cualBarChartData && <GradesBarChart data={cualBarChartData} nombre='Calificación Cualitativa' />}
+        <Grid container spacing={2}>
+          <Grid item xs={6} spacing={2} direction="column">
+            <Grid>
+              {cuantBarChartData && <GradesBarChart data={cuantBarChartData} nombre="Calificación Cuantitativa" />}
+            </Grid>
+            <Grid sx={{mt:2}}>
+            {cualBarChartData && <GradesBarChart data={cualBarChartData} nombre="Calificación Cualitativa" />}
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {wordCloudData && <WordCloud data={wordCloudData} />}
+          </Grid>
+        </Grid>
       </TabPanel>
+
       <TabPanel value={value} index={2}>
-        <Grid>
-          {bestWorstCommentData && <CommentViewer data={bestWorstCommentData}/>}
-        </Grid>
-        <Grid sx={{mt: '20px'}}>
-          {averageGradesData && <GradesCards data={averageGradesData}/>}
-        </Grid>
-        <Grid>
-          {cuantFortDebData && <CuantFortDeb valoraciones={cuantFortDebData.valoraciones}/>}
-        </Grid>
-        <Grid>
-          {cualFortDebData && <CualFortDeb valoraciones={cualFortDebData.valoraciones}/>}
-        </Grid>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-          {averageGradesRegistersData && <TableComponent name={'Cursos dictados por el docente'} columns={columns} data={averageGradesRegistersData} showSchoolFilter={false} showSubjectFilter={true}/>}
+
+        <Grid container spacing={2}>
+            {bestWorstCommentData && (
+              <Grid item xs={12}>
+                <CommentViewer data={bestWorstCommentData} />
+              </Grid>
+            )}
+
+            {cuantFortDebData && (
+              <Grid item xs={12}>
+                <CuantFortDeb valoraciones={cuantFortDebData.valoraciones} />
+              </Grid>
+            )}
+
+            {cualFortDebData && (
+              <Grid item xs={12}>
+                <CualFortDeb valoraciones={cualFortDebData.valoraciones} />
+              </Grid>
+            )}
+          </Grid>
       </TabPanel>
     </Box>
   );

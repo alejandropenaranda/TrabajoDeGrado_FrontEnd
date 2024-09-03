@@ -6,7 +6,7 @@ export default function AdminDashboard() {
     return (
         <>
             <SideBar>
-                <Grid>
+                <Grid sx={{height: '100vh'}}>
                     <h1>Dashboard de Administrador</h1>
                 </Grid>
             </SideBar>

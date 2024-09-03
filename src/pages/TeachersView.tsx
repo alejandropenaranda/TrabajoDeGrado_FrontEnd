@@ -18,7 +18,7 @@ export default function TeachersView() {
             <SideBar>
                 <Grid>
                     <h1>Docente {user.nombre}</h1>
-                        <MyTabs token={token} id={user.id}/>
+                    <MyTabs token={token} id={user.id}/>
                 </Grid>
             </SideBar>
         </>

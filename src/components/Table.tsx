@@ -384,7 +384,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ name, columns = [], dat
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
                     <Box sx={{
                         backgroundColor: 'red', padding: 2, display: 'flex',
                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
