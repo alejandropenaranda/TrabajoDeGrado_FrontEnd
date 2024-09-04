@@ -146,10 +146,10 @@ export default function SideBar({ children }: SideBarProps) {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin', 'Director', 'Docente'], route: role === 'Admin' ? '/admin-dashboard': '/director-dashboard' },
+    { text: 'Dashboard', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin', 'Director'], route: role === 'Admin' ? '/admin-dashboard': '/director-dashboard' },
     { text: 'Vista Facultad', icon: <LuSchool size={25}/>, roles: ['Admin'], route: '/faculty-view' },
     { text: 'Vista Escuela', icon: <IoSchoolOutline size={25}/>, roles: ['Admin', 'Director'], route: '/school-view' },
-    { text: 'Vista Docente', icon: <FaChalkboardTeacher size={25}/>, roles: ['Admin', 'Director', 'Docente'], route: '/teacher-view' },
+    { text: 'Vista Docente', icon: <FaChalkboardTeacher size={25}/>, roles: ['Director', 'Docente'], route: '/teacher-view' },
   ];
 
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));

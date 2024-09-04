@@ -1,11 +1,11 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { AverageGradesResponse } from "../types/TeacherTypes";
 
-interface GradesCardsProps {
+interface TeacherGradesCardsProps {
     data: AverageGradesResponse;
 }
 
-const GradesCards: React.FC<GradesCardsProps> = ({ data }) => {
+const TeacherGradesCards: React.FC<TeacherGradesCardsProps> = ({ data }) => {
 
     // Modifica la propiedad "xs" en los elementos Grid (item) para cambiar la disposición de las tarjetas. 
     // Por ejemplo, para mostrar las tarjetas en una sola columna en pantallas más pequeñas, cambia "xs={12}" a un valor menor o usa "md" para otros tamaños de pantalla.
@@ -48,4 +48,4 @@ const GradesCards: React.FC<GradesCardsProps> = ({ data }) => {
     );
 }
 
-export default GradesCards;
+export default TeacherGradesCards;

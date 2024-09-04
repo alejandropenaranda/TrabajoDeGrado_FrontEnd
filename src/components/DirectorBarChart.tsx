@@ -1,22 +1,20 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { ChartResponse } from '../types/TeacherTypes';
 import { Grid, Typography } from '@mui/material';
+import { FacSchoolGradesResponse } from '../types/DirectorTypes';
 
 interface TeacherGradesBarChartProps {
-  data: ChartResponse;
+  data: FacSchoolGradesResponse;
   nombre: string;
 }
 
 const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nombre }) => {
   const FacultyGrade = data.promedio_facultad;
   const SchoolGrade = data.promedio_escuela;
-  const TeacherGrade = data.promedio_docente;
 
   const Chartnames = [
-    'Calificación promedio de los docentes de la facultad',
-    'Calificación promedio de los docentes de la escuela',
-    'Calificación promedio del docente'
+    'Promedio general de la Escuela',
+    'Promedio general de la Facultad'
   ];
 
   const titleStyles = {
@@ -41,7 +39,7 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
         <BarChart
           series={[
             {
-              data: [FacultyGrade, SchoolGrade, TeacherGrade],
+              data: [FacultyGrade, SchoolGrade],
             },
           ]}
           height={290}
@@ -52,7 +50,7 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
             colorMap: {
               type: 'ordinal',
               values: Chartnames,
-              colors: ['red', '#6D4B9A', '#2F4858'],
+              colors: ['red', '#2F4858'],
             }
           }]}
           margin={{ top: 10, bottom: 30, left: 40, right: 10 }}

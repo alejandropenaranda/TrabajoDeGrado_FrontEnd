@@ -31,7 +31,7 @@ const FacultyView: React.FC<{}> = ({}) => {
     return (
         <>
             <SideBar>
-                <Grid sx={{height: '100vh'}}>
+                <Grid sx={{height: '100vh', mt: 5}}>
                     <TableComponent name="Docentes de la facultad de Ingeniería" columns={columns} data={averageGradesData} showActions={true} showSchoolFilter={true} showSubjectFilter={false}/>
                 </Grid>
             </SideBar>
