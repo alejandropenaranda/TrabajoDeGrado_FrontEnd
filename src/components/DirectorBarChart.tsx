@@ -3,12 +3,12 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { Grid, Typography } from '@mui/material';
 import { FacSchoolGradesResponse } from '../types/DirectorTypes';
 
-interface TeacherGradesBarChartProps {
+interface DirectorBarChartProps {
   data: FacSchoolGradesResponse;
   nombre: string;
 }
 
-const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nombre }) => {
+const DirectorBarChart: React.FC<DirectorBarChartProps> = ({ data, nombre }) => {
   const FacultyGrade = data.promedio_facultad;
   const SchoolGrade = data.promedio_escuela;
 
@@ -60,4 +60,4 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
   );
 }
 
-export default TeacherGradesBarChart;
+export default DirectorBarChart;
