@@ -39,7 +39,7 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
             }}
         >
             <Typography variant="h6" align="center" fontWeight="bold" gutterBottom>
-                Fortalezas y Debilidades cualitativas del docente a partir de los comentarios de las evaluaciones docente
+                Fortalezas y oportunidades de mejora del docente a partir de los comentarios de las evaluaciones docente
             </Typography>
 
             <Grid container spacing={1} sx={{ marginBottom: 2,  mt:2  }}>

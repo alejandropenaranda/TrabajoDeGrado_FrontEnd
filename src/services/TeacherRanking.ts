@@ -1,10 +1,10 @@
 import { API_URL } from "../auth/constants";
-import { FacSchoolGradesResponse, FacSchoolGradesResponseError } from "../types/DirectorTypes";
+import { TeacherRankingError, TeacherRankingResponse } from "../types/DirectorTypes";
 
-export async function getFacSchoolAverageGrades(token: string, id: number) {
+export async function getSchoolTeacherRanking(token: string, id: number) {
     try {
         const res = await fetch(
-            `${API_URL}/prom_fac_escuela?escuela_id=${id}`,
+            `${API_URL}/techer_ranking?escuela_id=${id}`,
             {
                 method: "GET",
                 headers: {
@@ -15,11 +15,11 @@ export async function getFacSchoolAverageGrades(token: string, id: number) {
         );
 
         if (res.ok) {
-            const json = (await res.json()) as FacSchoolGradesResponse
+            const json = (await res.json()) as TeacherRankingResponse
             return json
 
         } else {
-            const json = (await res.json()) as FacSchoolGradesResponseError
+            const json = (await res.json()) as TeacherRankingError
             return json
         }
 

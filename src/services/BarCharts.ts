@@ -2,7 +2,6 @@ import { API_URL } from "../auth/constants";
 import { WordCloudResponse, WordCloudError } from "../types/TeacherTypes"
 
 export async function getCuantBarChart(token: string, id: number) {
-    console.log(token, id)
     try {
         const res = await fetch(
             `${API_URL}/cuant_prom?docente_id=${id}`,
@@ -31,7 +30,6 @@ export async function getCuantBarChart(token: string, id: number) {
 }
 
 export async function getCualBarChart(token: string, id: number) {
-    console.log(token, id)
     try {
         const res = await fetch(
             `${API_URL}/cual_prom?docente_id=${id}`,

@@ -2,7 +2,6 @@ import { API_URL } from "../auth/constants";
 import { CualFortDebResponse, FortDebError, FortDebResponse } from "../types/TeacherTypes";
 
 export async function getCuantFortDeb(token: string, id: number) {
-    console.log(token, id)
     try {
         const res = await fetch(
             `${API_URL}/cuant_fort_deb?docente_id=${id}`,
@@ -30,7 +29,6 @@ export async function getCuantFortDeb(token: string, id: number) {
 }
 
 export async function getCualFortDeb(token: string, id: number) {
-    console.log(token, id)
     try {
         const res = await fetch(
             `${API_URL}/cual_fort_deb?docente_id=${id}`,

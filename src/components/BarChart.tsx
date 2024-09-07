@@ -14,9 +14,9 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
   const TeacherGrade = data.promedio_docente;
 
   const Chartnames = [
-    'Calificación promedio de los docentes de la facultad',
-    'Calificación promedio de los docentes de la escuela',
-    'Calificación promedio del docente'
+    'Promedio docentes de la facultad',
+    'Promedio docentes de la escuela',
+    'Promedio del docente'
   ];
 
   const titleStyles = {

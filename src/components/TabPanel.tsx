@@ -126,16 +126,17 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
         aria-label="basic tabs example"
         sx={{
           backgroundColor: 'red',
+          color: 'white',
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
           '& .MuiTabs-indicator': {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
           },
           '& .MuiTab-root': {
-            color: 'white',
+            color: 'white'
           },
           '& .Mui-selected': {
-            color: 'white',
+            color: 'white'
           },
         }}
       >

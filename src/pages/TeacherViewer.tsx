@@ -7,17 +7,13 @@ import { useParams, useLocation } from "react-router-dom";
 
 const TeacherViewer: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const location = useLocation(); // Hook para obtener el estado enviado
+    const location = useLocation();
     const auth = useAuth();
     const token = auth.getAccessToken();
 
-    // Convierte el id a un número y maneja el caso de que sea undefined
     const numericId = id ? parseInt(id, 10) : null;
 
-    // Obtén el nombre del estado
     const nombre = location.state?.nombre as string | undefined;
-
-    console.log("token enviado:", token);
 
     return (
         <>

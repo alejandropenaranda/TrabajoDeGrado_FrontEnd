@@ -122,9 +122,8 @@ export default function SideBar({ children }: SideBarProps) {
 
   const auth = useAuth();
   const user = auth.getUser();
-  const navigate = useNavigate(); // Crear instancia de useNavigate
+  const navigate = useNavigate();
 
-  console.log("user del sidebar", user)
   const getRole = () => {
     if (!user) return '';
     if (user.is_admin) return 'Admin';

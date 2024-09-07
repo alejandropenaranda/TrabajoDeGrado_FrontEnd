@@ -11,7 +11,7 @@ import {
     InputAdornment,
     Alert,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API_URL } from "../auth/constants.ts";
 import { AuthResponse, AuthResponseError } from "../types/Authtypes.ts";
 
@@ -28,11 +28,34 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [errorResponse, setErrorResponse] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
 
-    async function handleLogin (){
-        
-        try{
-            const response = await fetch(`${API_URL}/login`,{
+    useEffect(() => {
+        setTimeout(() => setErrorResponse(""), 3000);
+        return;
+    }, [errorResponse]);
+
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            setAlertMessage("Todos los campos son obligatorios");
+            setTimeout(() => setAlertMessage(""), 3000);
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setAlertMessage("Por favor, ingrese un correo válido");
+            setTimeout(() => setAlertMessage(""), 3000);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": 'application/json'
@@ -41,16 +64,15 @@ export default function Login() {
                     email,
                     password
                 })
-            })
-            if (response.ok){
-                console.log("Usuario logueado correctamente");
-                setErrorResponse("");
-                const json = (await response.json()) as AuthResponse
-                
-                if(json.token){
-                    auth.saveUser(json);
+            });
 
-                    const user = json.user
+            if (response.ok) {
+                setErrorResponse("");
+                const json = (await response.json()) as AuthResponse;
+
+                if (json.token) {
+                    auth.saveUser(json);
+                    const user = json.user;
                     goTo('/');
                     if (user.is_admin) {
                         goTo('/admin-dashboard');
@@ -60,18 +82,15 @@ export default function Login() {
                         goTo('/teacher-view');
                     }
                 }
-  
-            }else{
-                console.log("Something went wrong");
-                const json = (await response.json()) as AuthResponseError
-                console.log(json)
+
+            } else {
+                const json = (await response.json()) as AuthResponseError;
                 setErrorResponse(json.error);
             }
-        }catch(error){
-            console.log(error)
+        } catch (error) {
+            console.log(error);
         }
-    }
-
+    };
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -93,13 +112,24 @@ export default function Login() {
                     height: "100vh"
                 }}
             >
+                <Typography variant="h4" sx={{ mb: 6, color:'#5b5b5b'}}>Sistema de análisis de evaluaciones docente</Typography>
                 <Avatar sx={{ m: 1, bgcolor: "#ff0000" }}>
                     <LockOutlined />
                 </Avatar>
                 <Typography variant="h5">Login</Typography>
-                
+
                 <Grid item sx={{ mt: 1 }}>
-                    {!!errorResponse && <Alert variant="outlined" severity="error" sx={{ mt: "10px"}} >{errorResponse}</Alert>}
+                    {!!alertMessage && (
+                        <Alert variant="outlined" severity="error" sx={{ mt: "10px" }}>
+                            {alertMessage}
+                        </Alert>
+                    )}
+                    {!!errorResponse && (
+                        <Alert variant="outlined" severity="error" sx={{ mt: "10px" }}>
+                            {errorResponse}
+                        </Alert>
+                    )}
+
                     <TextField
                         margin="normal"
                         required
