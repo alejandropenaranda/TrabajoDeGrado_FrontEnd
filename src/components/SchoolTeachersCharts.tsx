@@ -3,8 +3,8 @@ import { Box, Grid, Typography } from '@mui/material';
 import { ChartContainer, ChartsTooltip, ChartsXAxis, ChartsYAxis } from '@mui/x-charts';
 import { BarPlot } from '@mui/x-charts/BarChart';
 import { LinePlot } from '@mui/x-charts/LineChart';
+import { ChartsAxisHighlight } from '@mui/x-charts/ChartsAxisHighlight';
 import { FacSchoolGradesResponse, SchoolTeachersAvergaeGradesResponse } from '../types/DirectorTypes';
-import { HighlightOutlined } from '@mui/icons-material';
 
 interface SchoolTeachersChartProps {
   schoolData: FacSchoolGradesResponse;
@@ -93,6 +93,18 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
               data: dataset.map((item) => item.docente),
               scaleType: 'band',
               id: 'x-axis-id',
+              labelStyle: {
+                fontSize: 14,
+                transform: `translateY(${
+                      // Hack that debería agregarse en la biblioteca más adelante.
+                      5 * Math.abs(Math.sin((Math.PI * 45) / 180))
+                    }px)`
+              },
+              tickLabelStyle: {
+                angle: 45,
+                textAnchor: 'start',
+                fontSize: 12,
+              },
             },
           ]}
           yAxis={[
@@ -104,11 +116,13 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
           ]}
           width={1600}
           height={400}
+          margin={{ bottom: 80 }}
         >
           <BarPlot />
           <LinePlot />
           <ChartsXAxis position="bottom" axisId="x-axis-id" />
           <ChartsYAxis axisId="y-axis-id" />
+          <ChartsAxisHighlight x="band" y="line" />
           <ChartsTooltip/>
         </ChartContainer>
       </Box>
@@ -117,5 +131,3 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
 };
 
 export default SchoolTeachersChart;
-
-// Solo falta el Highlight de los axis
