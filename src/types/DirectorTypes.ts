@@ -24,3 +24,15 @@ export type TeacherRankingResponse = TeacherRankingItem[];
 export interface TeacherRankingError{
     error: string;
 }
+
+export interface SchoolTeachersAvergaeGradesItem{
+    docente: string;
+    promedio_cuantitativo: number;
+    promedio_cualitativo: number; 
+}
+
+export type SchoolTeachersAvergaeGradesResponse = SchoolTeachersAvergaeGradesItem[]
+
+export interface SchoolTeachersAvergaeGradesError{
+    error: string;
+}
