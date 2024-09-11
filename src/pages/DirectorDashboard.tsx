@@ -87,6 +87,8 @@ import { getSchoolTeacherRanking } from "../services/TeacherRanking";
 import TeacherRankingTable from "../components/TeacherRanking";
 import { getSchoolTeacherAverageGrades } from "../services/SchoolTeacherAverageGrades";
 import SchoolTeachersChart from "../components/SchoolTeachersCharts";
+import { getSchoolFortDeb } from "../services/FortDeb";
+import SchoolFortDeb from "../components/SchoolFortDebViewer";
 
 const DirectorDashboard: React.FC<{}> = () => {
     const auth = useAuth();
@@ -100,6 +102,7 @@ const DirectorDashboard: React.FC<{}> = () => {
     const [facSchoolAverageGradesData, setFacSchoolAverageGradesData] = useState<any>(null);
     const [schoolTeacherRankingData, setSchoolTeacherRankingData] = useState<any>(null);
     const [schoolTeacherAvergeGradesData, setSchoolTeacherAvergeGradesData] = useState<any>(null);
+    const [schoolFortDebData, setSchoolFortDebData] = useState<any>(null);
 
     useEffect(() => {
         const fetchFacSchoolAverageGradesData = async () => {
@@ -116,9 +119,15 @@ const DirectorDashboard: React.FC<{}> = () => {
             setSchoolTeacherAvergeGradesData(data);
         };
 
+        const fetchschoolFortDebData = async () => {
+            const data = await getSchoolFortDeb(token, user.escuela.id);
+            setSchoolFortDebData(data);
+        };
+
         fetchFacSchoolAverageGradesData();
         fetchSchoolTeacherRankingData();
         fetchSchoolTeacherAvergeGradesData();
+        fetchschoolFortDebData();
     }, [token, user.escuela.id]);
 
     return (
@@ -126,6 +135,10 @@ const DirectorDashboard: React.FC<{}> = () => {
             <Grid container>
                 {schoolTeacherAvergeGradesData && (
                     <SchoolTeachersChart data={schoolTeacherAvergeGradesData} schoolData={facSchoolAverageGradesData}/>
+                )}
+
+                {schoolFortDebData && (
+                    <SchoolFortDeb valoraciones={schoolFortDebData.valoraciones}/>
                 )}
             </Grid>
             <Grid container spacing={3} sx={{ mt: 5, height: '100vh', p: 2 }}>

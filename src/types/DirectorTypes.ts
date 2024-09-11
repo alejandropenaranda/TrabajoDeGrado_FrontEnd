@@ -36,3 +36,16 @@ export type SchoolTeachersAvergaeGradesResponse = SchoolTeachersAvergaeGradesIte
 export interface SchoolTeachersAvergaeGradesError{
     error: string;
 }
+
+export interface SchoolFortDebResponse{
+    id: number;
+    escuela_id: number;
+    valoraciones: {
+        fortalezas:string[];
+        oportunidades_mejora: string[];
+    }
+}
+
+export interface SchoolFortDebError{
+    error: string;
+}
