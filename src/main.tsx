@@ -11,6 +11,7 @@ import FacultyView from './pages/FacultyView.tsx'
 import DirectorDashboard from './pages/DirectorDashboard.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import TeacherViewer from './pages/TeacherViewer.tsx'
+import UserManagement from './pages/UserManagement.tsx'
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
         path:"/teacher-viewer/:id",
         element: <TeacherViewer/>
       },
+      {
+        path: "/user-manager",
+        element: <UserManagement/>
+      }
 
 
     ]

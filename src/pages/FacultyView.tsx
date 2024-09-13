@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
-import { ColumnConfig } from "../components/Table";
 import { useEffect, useState } from "react";
 import { getAverageGradesFaculty } from "../services/AverageGrades";
 import { useAuth } from "../auth/AuthProvider";
-import TableComponent from "../components/Table";
+import TableComponent from "../components/GradesTable";
+import { ColumnConfig } from "../types/GeneralTypes";
 
 const FacultyView: React.FC<{}> = ({}) => {
     const auth = useAuth();

@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
-import { ColumnConfig } from "../components/Table";
+import { ColumnConfig } from "../components/GradesTable";
 import { useEffect, useState } from "react";
 import { getAverageGradesSchool } from "../services/AverageGrades";
 import { useAuth } from "../auth/AuthProvider";
-import TableComponent from "../components/Table";
+import TableComponent from "../components/GradesTable";
 
 
 const SchoolView: React.FC<{}> = ({}) => {

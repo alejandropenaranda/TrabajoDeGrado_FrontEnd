@@ -7,12 +7,8 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { AvergaGradesRegistersResponse } from '../types/TeacherTypes';
 import { useNavigate } from 'react-router-dom';
-import FiltersComponent from './FiltersComponent';
-
-export interface ColumnConfig {
-    headerName: string;
-    fieldName: string;
-}
+import FiltersComponent from './GradesTableFilter';
+import { ColumnConfig } from '../types/GeneralTypes';
 
 interface TableComponentProps {
     name: string;

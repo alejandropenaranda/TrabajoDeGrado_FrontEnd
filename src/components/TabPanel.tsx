@@ -6,7 +6,7 @@ import { getCuantBarChart, getCualBarChart } from '../services/BarCharts'
 import { getBestWorstComment } from '../services/BestWorstComment';
 import CommentViewer from './CommentViewer';
 import { getAverageGrades, getAverageGradesTeacher } from '../services/AverageGrades';
-import TableComponent, { ColumnConfig } from './Table';
+import TableComponent, { ColumnConfig } from './GradesTable';
 import { getCualFortDeb, getCuantFortDeb } from '../services/FortDeb';
 import CuantFortDeb from './CuantFortDebViewer';
 import CualFortDeb from './CualFortDebViewer';

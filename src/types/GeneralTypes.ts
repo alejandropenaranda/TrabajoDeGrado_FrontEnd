@@ -19,3 +19,8 @@ export interface Materia {
     codigo: string;
     nombre: string;
 }
+
+export interface ColumnConfig {
+    headerName: string;
+    fieldName: string;
+}
