@@ -1,39 +1,55 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-    TextField, Button, Grid, Box, Typography,
-    InputAdornment, TableFooter, TablePagination
+    TextField, Button, Grid, Box, Typography, InputAdornment, TableFooter, TablePagination, Alert,
+    Snackbar
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate } from 'react-router-dom';
 import { userResponse } from '../types/AdminTypes';
-import { ColumnConfig } from '../types/GeneralTypes';
-import UsersTableFilter from './UsersTableFilter'; // Asegúrate de importar el componente de filtro
+import { ColumnConfig, User } from '../types/GeneralTypes';
+import UsersTableFilter from './UsersTableFilter';
+import EditUserModal from './EditUserModal';
+import { modifyUser } from '../services/UserManagementService';
 
 interface UsersTableComponentProps {
     name: string;
     columns: ColumnConfig[];
     data: userResponse;
     showActions?: boolean;
+    token: string;
 }
 
-const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns = [], data = [] }) => {
+const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns = [], data = [], token }) => {
     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
-    const [isDirectorChecked, setIsDirectorChecked] = useState(false); // Estado para "Es director"
+    const [isDirectorChecked, setIsDirectorChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
-
-    const navigate = useNavigate();
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [users, setUsers] = useState<User[]>(data);
+    const [feedback, setFeedback] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
     useEffect(() => {
         if (data && data.length > 0) {
             setLoading(false);
+            const sortedUsers = [...data].sort((a, b) => a.id - b.id);
+            setUsers(sortedUsers);
         } else if (data === null) {
             setLoading(true);
         }
     }, [data]);
+
+    useEffect(() => {
+        if (feedback) {
+            const timer = setTimeout(() => {
+                setFeedback(null);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [feedback]);
 
     const uniqueSchools = Array.from(new Set((data || []).map(item => item.escuela.nombre)));
 
@@ -50,7 +66,6 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
         setPage(0);
     };
 
-    // Maneja el cambio en los checkboxes de las escuelas
     const handleSchoolChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const school = event.target.name;
         const isChecked = event.target.checked;
@@ -62,17 +77,51 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
         );
     };
 
-    // Maneja el cambio en el checkbox "Es director"
     const handleDirectorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsDirectorChecked(event.target.checked);
     };
 
-    const handleViewMore = (id: number, nombre: string) => {
-        navigate(`/teacher-viewer/${id}`, { state: { nombre } });
+    const handleEditClick = (user: User) => {
+        setSelectedUser(user);
+        setIsModalOpen(true);
     };
 
-    // Filtrar los datos por escuela, "Es director" y búsqueda
-    const filteredResults = (data || []).filter(item =>
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null);
+    };
+
+    const handleSaveUser = async (updatedUser: User) => {
+        if (selectedUser) {
+            const { nombre, email, codigo, is_admin, is_director } = updatedUser;
+            const body: Partial<User> = {};
+
+            if (nombre !== selectedUser.nombre) body.nombre = nombre;
+            if (email !== selectedUser.email) body.email = email;
+            if (codigo !== selectedUser.codigo) body.codigo = codigo;
+            if (is_admin !== selectedUser.is_admin) body.is_admin = is_admin;
+            if (is_director !== selectedUser.is_director) body.is_director = is_director;
+
+            try {
+                const result = await modifyUser(token, selectedUser.id, body);
+                if (result) {
+                    setUsers(prevUsers => prevUsers.map(user =>
+                        user.id === selectedUser.id ? { ...user, ...body } : user
+                    ));
+                    setFeedback({ message: 'Usuario actualizado correctamente.', type: 'success' });
+                }
+            } catch (error) {
+                console.error('Error al actualizar el usuario:', error);
+                setFeedback({ message: 'Error al actualizar el usuario.', type: 'error' });
+            } finally {
+                setIsModalOpen(false);
+                setSelectedUser(null);
+                setTimeout(() => setFeedback(null), 2000);  // Oculta el mensaje de feedback después de 2 segundos
+            }
+        }
+    };
+
+    const filteredResults = (users || []).filter(item =>
         (selectedSchools.length === 0 || selectedSchools.includes(item.escuela.nombre)) &&
         (!isDirectorChecked || item.is_director === true) &&
         item.nombre.toLowerCase().includes(searchTerm)
@@ -99,7 +148,7 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
-                <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
+                <TableContainer component={Paper} sx={{ borderRadius: '10px', position: 'relative' }}>
                     <Box sx={{
                         backgroundColor: 'red', padding: 2, display: 'flex',
                         justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: 10,
@@ -171,10 +220,10 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
                                                 <TableCell sx={{ textAlign: 'center' }}>
                                                     <Button
                                                         variant="contained"
-                                                        sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: '#cc0000' }, borderRadius: 10 }}
-                                                        onClick={() => handleViewMore(row.id, row.nombre)}
+                                                        sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' }, borderRadius: 10, ml: 1 }}
+                                                        onClick={() => handleEditClick(row)}
                                                     >
-                                                        Ver más
+                                                        Editar
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -204,10 +253,26 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
                             </Table>
                         </>
                     )}
+                    {feedback && (
+                        <Snackbar
+                            open={!!feedback}
+                            autoHideDuration={2000}
+                            onClose={() => setFeedback(null)}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            sx={{ marginTop: '70px' }}
+                        >
+                            <Alert
+                            variant='filled'
+                                severity={feedback?.type}
+                                sx={{ width: 'auto' }}
+                            >
+                                {feedback?.message}
+                            </Alert>
+                        </Snackbar>
+                    )}
                 </TableContainer>
             </Grid>
-            <Grid item xs={12} md={4}>
-                {/* Componente de filtro */}
+            <Grid item xs={12} md={4} >
                 <UsersTableFilter
                     schools={uniqueSchools}
                     selectedSchools={selectedSchools}
@@ -216,10 +281,16 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
                     onDirectorChange={handleDirectorChange}
                 />
             </Grid>
+            {selectedUser && (
+                <EditUserModal
+                    user={selectedUser}
+                    open={isModalOpen}
+                    onClose={handleCloseModal}
+                    onSave={handleSaveUser}
+                />
+            )}
         </Grid>
     );
 };
 
 export default UsersTableComponent;
-
-
