@@ -2,9 +2,10 @@ import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
 import { useAuth } from "../auth/AuthProvider";
 import WelcomeUserCard from "../components/WelcomeUser";
+import FileUploadComponent from "../components/GradesUploader";
 
 
-const AdminDashboard: React.FC<{}> = ({}) => {
+const AdminDashboard: React.FC = () => {
     
     const auth = useAuth();
     const user = auth.getUser();
@@ -22,6 +23,9 @@ const AdminDashboard: React.FC<{}> = ({}) => {
                     <h2>Dashboard de Administrador</h2>
                     <Grid item xs={4}>
                         <WelcomeUserCard nombre={user.nombre}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FileUploadComponent token={token}/>
                     </Grid>
                     
                 </Grid>
