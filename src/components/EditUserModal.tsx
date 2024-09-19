@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Typography, TextField, Switch, FormControlLabel, Button } from '@mui/material';
+import { Modal, Box, Typography, TextField, Switch, FormControlLabel, Button, InputAdornment, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { User } from '../types/GeneralTypes';
 
 interface EditUserModalProps {
@@ -13,11 +14,19 @@ interface EditUserModalProps {
 const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSave }) => {
     const [updatedUser, setUpdatedUser] = useState<User>(user);
     const [originalUser, setOriginalUser] = useState<User>(user);
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<string | null>(null);
 
     useEffect(() => {
         setUpdatedUser(user);
         setOriginalUser(user);
-    }, [user]);
+        setNewPassword('');
+        setConfirmPassword('');
+        setPasswordError(null);
+    }, [user, open]);
 
     const handleInputChange = (field: keyof User, value: any) => {
         setUpdatedUser((prevUser: User) => ({
@@ -25,12 +34,19 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
             [field]: value,
         }));
     };
-    const isSaveEnabled = () => {
-        return JSON.stringify(updatedUser) !== JSON.stringify(originalUser);
-    };
 
     const handleSaveClick = () => {
-        onSave(updatedUser);
+        if (newPassword && newPassword !== confirmPassword) {
+            setPasswordError('Las contraseñas no coinciden');
+            return;
+        }
+        setPasswordError(null);
+        const userWithPassword = { ...updatedUser, password: newPassword };
+        onSave(userWithPassword);
+    };
+
+    const isSaveEnabled = () => {
+        return JSON.stringify(updatedUser) !== JSON.stringify(originalUser) || newPassword || confirmPassword;
     };
 
     return (
@@ -85,7 +101,41 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
                         label="Es Director"
                     />
                 </Box>
-
+                <TextField
+                    label="Nueva Contraseña"
+                    type={showNewPassword ? 'text' : 'password'}
+                    fullWidth
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    sx={{ marginBottom: 2 }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => setShowNewPassword(!showNewPassword)}>
+                                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    label="Confirmar Contraseña"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    fullWidth
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    sx={{ marginBottom: 2 }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                {passwordError && <Typography color="error" sx={{ marginBottom: 2 }}>{passwordError}</Typography>}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 3 }}>
                     <Button
                         onClick={onClose}
@@ -117,3 +167,4 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
 };
 
 export default EditUserModal;
+

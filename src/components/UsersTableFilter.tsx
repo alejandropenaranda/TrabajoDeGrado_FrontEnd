@@ -5,16 +5,20 @@ interface UsersTableFilterProps {
     schools: string[];
     selectedSchools: string[];
     isDirectorChecked: boolean;
+    isAdminChecked: boolean;
     onSchoolChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onDirectorChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onAdminChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const UsersTableFilter: React.FC<UsersTableFilterProps> = ({
     schools,
     selectedSchools,
     isDirectorChecked,
+    isAdminChecked,
     onSchoolChange,
-    onDirectorChange
+    onDirectorChange,
+    onAdminChange
 }) => {
     return (
         <Paper elevation={3} sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
@@ -40,9 +44,9 @@ const UsersTableFilter: React.FC<UsersTableFilterProps> = ({
                     ))}
                 </Grid>
 
-                {/* Columna derecha - Filtro de Es Director */}
+                {/* Columna derecha - Filtros de Es Director y Es Admin */}
                 <Grid item xs={6}>
-                    <Typography variant="body1" sx={{ marginBottom: 2 }}>Es Director</Typography>
+                    <Typography variant="body1" sx={{ marginBottom: 2 }}>Filtros</Typography>
                     <FormControlLabel
                         control={
                             <Switch
@@ -51,7 +55,17 @@ const UsersTableFilter: React.FC<UsersTableFilterProps> = ({
                                 onChange={onDirectorChange}
                             />
                         }
-                        label="Sí"
+                        label="Es Director"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                name="is_admin"
+                                checked={isAdminChecked}
+                                onChange={onAdminChange}
+                            />
+                        }
+                        label="Es Admin"
                     />
                 </Grid>
             </Grid>

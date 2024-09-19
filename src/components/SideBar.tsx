@@ -121,6 +121,7 @@ export default function SideBar({ children }: SideBarProps) {
   const [open, setOpen] = useState(false);
 
   const auth = useAuth();
+  const token = auth.getAccessToken();
   const user = auth.getUser();
   const navigate = useNavigate();
 
@@ -148,7 +149,7 @@ export default function SideBar({ children }: SideBarProps) {
     { text: 'Dashboard', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin', 'Director'], route: role === 'Admin' ? '/admin-dashboard': '/director-dashboard' },
     { text: 'Gestionar Usuarios', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin'], route: '/user-manager'},
     { text: 'Vista Facultad', icon: <LuSchool size={25}/>, roles: ['Admin'], route: '/faculty-view' },
-    { text: 'Vista Escuela', icon: <IoSchoolOutline size={25}/>, roles: ['Admin', 'Director'], route: '/school-view' },
+    { text: 'Vista Escuela', icon: <IoSchoolOutline size={25}/>, roles: ['Director'], route: '/school-view' },
     { text: 'Vista Docente', icon: <FaChalkboardTeacher size={25}/>, roles: ['Director', 'Docente'], route: '/teacher-view' },
   ];
 
@@ -176,7 +177,7 @@ export default function SideBar({ children }: SideBarProps) {
             justifyContent="space-between"
             alignItems="center" sx={{ pl: '30px' }}>
             <img src={`${APP_URL}/headerUnivalle.png`} height={50} />
-            <UserHeaderCard />
+            <UserHeaderCard token={token}/>
           </Grid>
         </Toolbar>
       </AppBar>
@@ -201,7 +202,7 @@ export default function SideBar({ children }: SideBarProps) {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
-                onClick={() => handleNavigation(item.route)} // Navegar cuando se hace clic
+                onClick={() => handleNavigation(item.route)}
               >
                 <ListItemIcon
                   sx={{

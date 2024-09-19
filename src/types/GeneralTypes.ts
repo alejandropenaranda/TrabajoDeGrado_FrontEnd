@@ -24,3 +24,20 @@ export interface ColumnConfig {
     headerName: string;
     fieldName: string;
 }
+
+
+export interface SelfUserPasswordChangeResponse {
+    message: string;
+}
+
+export interface SelfUserPasswordChangeError {
+    error: string;
+}
+
+
+export type getSchoolsResponse = Escuela[]
+
+
+export interface getSchoolsError  {
+    error: string;
+}

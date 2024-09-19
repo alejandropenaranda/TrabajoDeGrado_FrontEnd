@@ -130,39 +130,24 @@ const DirectorDashboard: React.FC<{}> = () => {
         fetchschoolFortDebData();
     }, [token, user.escuela.id]);
 
+    console.log(schoolTeacherAvergeGradesData);
+    console.log(facSchoolAverageGradesData);
+    
     return (
         <SideBar>
-            <Grid container>
-                {schoolTeacherAvergeGradesData && (
-                    <SchoolTeachersChart data={schoolTeacherAvergeGradesData} schoolData={facSchoolAverageGradesData}/>
-                )}
-
-                {schoolFortDebData && (
-                    <SchoolFortDeb valoraciones={schoolFortDebData.valoraciones}/>
-                )}
-            </Grid>
-            <Grid container spacing={3} sx={{ mt: 5, height: '100vh', p: 2 }}>
-                <Grid item xs={12} md={4}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <WelcomeUserCard nombre={user.nombre} />
+            <Grid container spacing={3} sx={{ height: 'auto', pt: 2 }}>
+                {/* Primera fila */}
+                <Grid item xs={12}>
+                    <Grid container spacing={3} justifyContent="center" alignItems="center">
+                        <Grid item xs={12} md={4}>
+                            <WelcomeUserCard nombre={user.nombre} token={token} />
                         </Grid>
-                        <Grid item xs={12}>
-                            {schoolTeacherRankingData && (
-                                <TeacherRankingTable data={schoolTeacherRankingData} escuela={user.escuela.nombre} />
-                            )}
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={4}>
                             {facSchoolAverageGradesData && (
                                 <DirectorGradesCards data={facSchoolAverageGradesData} escuela={user.escuela.nombre} />
                             )}
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} md={4}>
                             {facSchoolAverageGradesData && (
                                 <DirectorBarChart data={facSchoolAverageGradesData} />
                             )}
@@ -170,10 +155,29 @@ const DirectorDashboard: React.FC<{}> = () => {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
-                    <Grid container spacing={3}>
+                {/* Segunda fila */}
+                <Grid item xs={12}>
+                    <Grid container spacing={3} justifyContent="center" alignItems="center">
+                        <Grid item xs={12} md={6}>
+                            {schoolTeacherRankingData && (
+                                <TeacherRankingTable data={schoolTeacherRankingData} escuela={user.escuela.nombre} />
+                            )}
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            {schoolFortDebData && (
+                                <SchoolFortDeb valoraciones={schoolFortDebData.valoraciones} />
+                            )}
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                {/* Tercera fila */}
+                <Grid item xs={12}>
+                    <Grid container spacing={3} justifyContent="center" alignItems="center">
                         <Grid item xs={12}>
-                            <DirectorRedirectionButtons />
+                            {schoolTeacherAvergeGradesData && facSchoolAverageGradesData && (
+                                <SchoolTeachersChart data={schoolTeacherAvergeGradesData} schoolData={facSchoolAverageGradesData} />
+                            )}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -183,3 +187,12 @@ const DirectorDashboard: React.FC<{}> = () => {
 };
 
 export default DirectorDashboard;
+
+// {/* Tercera fila: DirectorRedirectionButtons */}
+// <Grid item xs={12} md={4}>
+// <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ height: '100%' }}>
+//     <Grid item xs={12}>
+//         <DirectorRedirectionButtons />
+//     </Grid>
+// </Grid>
+// </Grid>

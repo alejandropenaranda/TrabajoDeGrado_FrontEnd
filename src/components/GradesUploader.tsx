@@ -1,20 +1,7 @@
 // import React, { useState } from "react";
-// import { Box, Card, CardContent, Typography, Button, CircularProgress, Alert, styled } from "@mui/material";
+// import { Box, Card, CardContent, Typography, Button, CircularProgress, Alert, Tooltip, IconButton } from "@mui/material";
+// import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 // import { uploadQuantitativeGrades, uploadQualitativeGrades } from "../services/UploadGrades"; // Asegúrate de cambiar el path al correcto
-
-// // Estilos personalizados para el input de archivo
-// const FileInput = styled('input')({
-//     display: 'none', // Oculta el input de archivo
-// });
-
-// // Estilos personalizados para el botón
-// const StyledButton = styled(Button)({
-//     backgroundColor: '#d32f2f', // Rojo
-//     color: 'white',
-//     '&:hover': {
-//         backgroundColor: '#b71c1c', // Rojo oscuro
-//     },
-// });
 
 // const FileUploadComponent: React.FC<{ token: string }> = ({ token }) => {
 //     const [qualitativeFile, setQualitativeFile] = useState<File | null>(null);
@@ -44,15 +31,20 @@
 //         setLoading(true);
 //         const response = await uploadQualitativeGrades(token, qualitativeFile);
 //         setLoading(false);
-//         setQualitativeFile(null); // Limpia el archivo después de enviar
 
-//         if (response && 'message' in response) { // Verifica que response no sea null
-//             setAlertMessage(response.message);
-//             setAlertType("success");
-//         } else {
-//             setAlertMessage("Error inesperado al subir las calificaciones cualitativas.");
+//         if (response && 'error' in response) {
+//             setAlertMessage(response.error);
 //             setAlertType("error");
+//         } else {
+//             setAlertMessage("Calificaciones cualitativas subidas correctamente.");
+//             setAlertType("success");
 //         }
+
+//         setQualitativeFile(null);
+//         setTimeout(() => {
+//             setAlertMessage(null);
+//             setAlertType(undefined);
+//         }, 3000);
 //     };
 
 //     const handleUploadQuantitative = async () => {
@@ -64,98 +56,280 @@
 //         setLoading(true);
 //         const response = await uploadQuantitativeGrades(token, quantitativeFile);
 //         setLoading(false);
-//         setQuantitativeFile(null); // Limpia el archivo después de enviar
 
-//         if (response && 'message' in response) { // Verifica que response no sea null
-//             setAlertMessage(response.message);
-//             setAlertType("success");
-//         } else {
-//             setAlertMessage("Error inesperado al subir las calificaciones cuantitativas.");
+//         if (response && 'error' in response) {
+//             setAlertMessage(response.error);
 //             setAlertType("error");
+//         } else {
+//             setAlertMessage("Calificaciones cuantitativas subidas correctamente.");
+//             setAlertType("success");
 //         }
+
+//         setQuantitativeFile(null);
+//         setTimeout(() => {
+//             setAlertMessage(null);
+//             setAlertType(undefined);
+//         }, 3000);
 //     };
 
-//     // Ocultar la alerta después de 3 segundos
-//     React.useEffect(() => {
-//         if (alertMessage) {
-//             const timer = setTimeout(() => {
-//                 setAlertMessage(null);
-//                 setAlertType(undefined);
-//             }, 3000);
-//             return () => clearTimeout(timer);
-//         }
-//     }, [alertMessage]);
-
 //     return (
-//         <Box display="flex" flexDirection="column" gap={2} padding={2}>
-//             {loading && <CircularProgress sx={{ alignSelf: 'center' }} />}
+//         <Box display="flex" flexDirection="column" gap={2}>
+//             {loading && <CircularProgress />}
+
 //             {alertMessage && alertType && (
-//                 <Alert severity={alertType} sx={{ marginBottom: 2 }}>
-//                     {alertMessage}
-//                 </Alert>
+//                 <Alert severity={alertType}>{alertMessage}</Alert>
 //             )}
 
-//             {/* Tarjeta para calificaciones cualitativas */}
-//             <Card sx={{ boxShadow: 3, borderRadius: 2, padding: 2 }}>
+//             <Card
+//                 sx={{
+//                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+//                     borderRadius: '10px',
+//                     position: 'relative',
+//                     paddingBottom: 2,
+//                 }}
+//             >
 //                 <CardContent>
-//                     <Typography variant="h6" gutterBottom>
+//                     <Tooltip title="Los archivos de calificaciones cualitativas deben contener las columnas:
+//                                     'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'COMENTARIO', 'MATERIA' y 'CODIGO_MATERIA'
+//                                     para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro.">
+//                         <IconButton
+//                             sx={{
+//                                 position: 'absolute',
+//                                 top: 8,
+//                                 right: 8,
+//                             }}
+//                         >
+//                             <HelpOutlineIcon />
+//                         </IconButton>
+//                     </Tooltip>
+//                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
 //                         Subir Calificaciones Cualitativas
 //                     </Typography>
-//                     <label htmlFor="qualitative-file-upload">
-//                         <FileInput
-//                             id="qualitative-file-upload"
-//                             type="file"
-//                             accept=".xlsx"
-//                             onChange={handleQualitativeFileChange}
-//                         />
-//                         <Button
-//                             variant="contained"
-//                             component="span"
-//                             color="primary"
-//                             sx={{ marginBottom: 2 }}
-//                         >
-//                             Seleccionar archivo
-//                         </Button>
-//                     </label>
-//                     <StyledButton
-//                         variant="contained"
+//                     <Box display="flex" alignItems="center" gap={1}>
+//                         <label htmlFor="upload-qualitative">
+//                             <input
+//                                 accept=".xlsx"
+//                                 id="upload-qualitative"
+//                                 type="file"
+//                                 onChange={handleQualitativeFileChange}
+//                                 style={{ display: 'none' }}
+//                             />
+//                             <Button variant="contained" color="primary" component="span">
+//                                 Seleccionar Archivo
+//                             </Button>
+//                         </label>
+//                         <Typography variant="body2" color="textSecondary">
+//                             {qualitativeFile ? `Archivo seleccionado: ${qualitativeFile.name}` : "No se ha seleccionado ningún archivo"}
+//                         </Typography>
+//                     </Box>
+//                     <Button
+//                         sx={{
+//                             backgroundColor: qualitativeFile ? 'red' : 'lightgray',
+//                             color: qualitativeFile ? 'white' : 'black',
+//                             '&:hover': {
+//                                 backgroundColor: qualitativeFile ? 'darkred' : 'lightgray',
+//                             },
+//                             position: 'absolute',
+//                             bottom: 16,
+//                             right: 16,
+//                         }}
 //                         onClick={handleUploadQualitative}
 //                         disabled={loading || !qualitativeFile}
 //                     >
-//                         Enviar Cualitativas
-//                     </StyledButton>
+//                         Enviar Archivo
+//                     </Button>
 //                 </CardContent>
 //             </Card>
 
-//             {/* Tarjeta para calificaciones cuantitativas */}
-//             <Card sx={{ boxShadow: 3, borderRadius: 2, padding: 2 }}>
+//             <Card
+//                 sx={{
+//                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+//                     borderRadius: '10px',
+//                     position: 'relative',
+//                     paddingBottom: 2,
+//                 }}
+//             >
 //                 <CardContent>
-//                     <Typography variant="h6" gutterBottom>
+//                     <Tooltip title="Los archivos de calificaciones cuantitativas deben contener las columnas:
+//                                     'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'PROM_PREGUNTA9', 'PROM_PREGUNTA10',
+//                                     'PROM_PREGUNTA11', 'PROM_PREGUNTA12', 'PROM_PREGUNTA13', 'PROM_PREGUNTA14', 
+//                                     'PROM_PREGUNTA15', 'PROM_PREGUNTA16', 'PROM_PREGUNTA17', 'PROM_PREGUNTA18',    
+//                                     'PROM_PREGUNTA19', 'PROM_PREGUNTA20', 'PROM_DOCENTE', 'MATERIA' y 'CODIGO_MATERIA'
+//                                     para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro.">
+//                         <IconButton
+//                             sx={{
+//                                 position: 'absolute',
+//                                 top: 8,
+//                                 right: 8,
+//                             }}
+//                         >
+//                             <HelpOutlineIcon />
+//                         </IconButton>
+//                     </Tooltip>
+//                     <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
 //                         Subir Calificaciones Cuantitativas
 //                     </Typography>
-//                     <label htmlFor="quantitative-file-upload">
-//                         <FileInput
-//                             id="quantitative-file-upload"
-//                             type="file"
-//                             accept=".xlsx"
-//                             onChange={handleQuantitativeFileChange}
-//                         />
-//                         <Button
-//                             variant="contained"
-//                             component="span"
-//                             color="primary"
-//                             sx={{ marginBottom: 2 }}
-//                         >
-//                             Seleccionar archivo
-//                         </Button>
-//                     </label>
-//                     <StyledButton
-//                         variant="contained"
+//                     <Box display="flex" alignItems="center" gap={1}>
+//                         <label htmlFor="upload-quantitative">
+//                             <input
+//                                 accept=".xlsx"
+//                                 id="upload-quantitative"
+//                                 type="file"
+//                                 onChange={handleQuantitativeFileChange}
+//                                 style={{ display: 'none' }}
+//                             />
+//                             <Button variant="contained" color="primary" component="span">
+//                                 Seleccionar Archivo
+//                             </Button>
+//                         </label>
+//                         <Typography variant="body2" color="textSecondary">
+//                             {quantitativeFile ? `Archivo seleccionado: ${quantitativeFile.name}` : "No se ha seleccionado ningún archivo"}
+//                         </Typography>
+//                     </Box>
+//                     <Button
+//                         sx={{
+                            // backgroundColor: quantitativeFile ? 'red' : 'lightgray',
+                            // color: quantitativeFile ? 'white' : 'black',
+                            // '&:hover': {
+                            //     backgroundColor: quantitativeFile ? 'darkred' : 'lightgray',
+                            // },
+//                             position: 'absolute',
+//                             bottom: 16,
+//                             right: 16,
+//                         }}
 //                         onClick={handleUploadQuantitative}
 //                         disabled={loading || !quantitativeFile}
 //                     >
-//                         Enviar Cuantitativas
-//                     </StyledButton>
+//                         Enviar Archivo
+//                     </Button>
+//                 </CardContent>
+
+// import React, { useState, useId } from "react";
+// import {
+//     Box,
+//     Card,
+//     CardContent,
+//     Typography,
+//     Button,
+//     CircularProgress,
+//     Alert,
+//     IconButton,
+//     Tooltip,
+// } from "@mui/material";
+// import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+
+// interface FileUploadComponentProps {
+//     token: string;
+//     title: string;
+//     helpMessage: string;
+//     uploadService: (token: string, file: File) => Promise<any>;
+// }
+
+// const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
+//     token,
+//     title,
+//     helpMessage,
+//     uploadService,
+// }) => {
+//     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+//     const [loading, setLoading] = useState<boolean>(false);
+//     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+//     const [alertType, setAlertType] = useState<"success" | "error" | undefined>(undefined);
+
+//     // Hook para generar un ID único para el input de archivo
+//     const inputId = useId();
+
+//     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         if (event.target.files) {
+//             setSelectedFile(event.target.files[0]);
+//         }
+//     };
+
+//     const handleUpload = async () => {
+//         if (!selectedFile) {
+//             setAlertMessage("Por favor, selecciona un archivo.");
+//             setAlertType("error");
+//             return;
+//         }
+//         setLoading(true);
+//         const response = await uploadService(token, selectedFile);
+//         setLoading(false);
+
+//         if (response && 'error' in response) {
+//             setAlertMessage(response.error);
+//             setAlertType("error");
+//         } else {
+//             setAlertMessage("Archivo subido correctamente.");
+//             setAlertType("success");
+//         }
+
+//         setSelectedFile(null);
+//         setTimeout(() => {
+//             setAlertMessage(null);
+//             setAlertType(undefined);
+//         }, 3000);
+//     };
+
+//     return (
+//         <Box display="flex" flexDirection="column" gap={2}>
+//             {loading && <CircularProgress />}
+//             {alertMessage && alertType && (
+//                 <Alert severity={alertType}>{alertMessage}</Alert>
+//             )}
+
+//             <Card
+//                 sx={{
+//                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+//                     borderRadius: "10px",
+//                     padding: 2,
+//                 }}
+//             >
+//                 <CardContent>
+//                     <Box display="flex" justifyContent="space-between" alignItems="center">
+//                         <Typography variant="h6" fontWeight="bold">
+//                             {title}
+//                         </Typography>
+//                         <Tooltip title={helpMessage}>
+//                             <IconButton>
+//                                 <HelpOutlineIcon />
+//                             </IconButton>
+//                         </Tooltip>
+//                     </Box>
+
+//                     <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
+//                         {selectedFile ? `Archivo seleccionado: ${selectedFile.name}` : "No se ha seleccionado ningún archivo"}
+//                     </Typography>
+//                     <Box display="flex" alignItems="center" sx={{ marginTop: 2 }}>
+//                         <label htmlFor={inputId}>
+//                             <Button variant="contained" component="span" sx={{ marginRight: 2 }}>
+//                                 Seleccionar Archivo
+//                             </Button>
+//                         </label>
+//                         <input
+//                             accept=".xlsx"
+//                             id={inputId}
+//                             type="file"
+//                             onChange={handleFileChange}
+//                             style={{ display: "none" }}
+//                         />
+//                     </Box>
+
+//                     <Button
+//                         onClick={handleUpload}
+//                         disabled={loading || !selectedFile}
+//                         sx={{
+//                             backgroundColor: selectedFile ? 'red' : 'lightgray',
+//                             color: selectedFile ? 'white' : 'black',
+//                             '&:hover': {
+//                                 backgroundColor: selectedFile ? 'darkred' : 'lightgray',
+//                             },
+//                             marginTop: 2,
+//                             display: "block",
+//                             marginLeft: "auto",
+//                         }}
+//                     >
+//                         Enviar
+//                     </Button>
 //                 </CardContent>
 //             </Card>
 //         </Box>
@@ -164,96 +338,74 @@
 
 // export default FileUploadComponent;
 
-import React, { useState } from "react";
-import { Box, Card, CardContent, Typography, Button, CircularProgress, Alert, Input, styled } from "@mui/material";
-import { uploadQuantitativeGrades, uploadQualitativeGrades } from "../services/UploadGrades"; // Asegúrate de cambiar el path al correcto
+import React, { useState, useId } from "react";
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    CircularProgress,
+    Snackbar,
+    Alert,
+    IconButton,
+    Tooltip,
+} from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
-const StyledCard = styled(Card)(({ theme }) => ({
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    borderRadius: '10px',
-}));
+interface FileUploadComponentProps {
+    token: string;
+    title: string;
+    helpMessage: string;
+    uploadService: (token: string, file: File) => Promise<any>;
+}
 
-const StyledButton = styled(Button)(({ theme }) => ({
-    backgroundColor: '#f44336', // Rojo
-    color: '#fff',
-    '&:hover': {
-        backgroundColor: '#d32f2f', // Rojo oscuro
-    },
-    marginTop: theme.spacing(2),
-}));
+interface Feedback {
+    message: string;
+    type: "success" | "error";
+}
 
-const FileInput = styled(Input)(({ theme }) => ({
-    display: 'none',
-}));
-
-const FileUploadComponent: React.FC<{ token: string }> = ({ token }) => {
-    const [qualitativeFile, setQualitativeFile] = useState<File | null>(null);
-    const [quantitativeFile, setQuantitativeFile] = useState<File | null>(null);
+const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
+    token,
+    title,
+    helpMessage,
+    uploadService,
+}) => {
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [alertMessage, setAlertMessage] = useState<string | null>(null);
-    const [alertType, setAlertType] = useState<"success" | "error" | undefined>(undefined);
+    const [feedback, setFeedback] = useState<Feedback | null>(null);
 
-    const handleQualitativeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Hook para generar un ID único para el input de archivo
+    const inputId = useId();
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
-            setQualitativeFile(event.target.files[0]);
+            setSelectedFile(event.target.files[0]);
         }
     };
 
-    const handleQuantitativeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            setQuantitativeFile(event.target.files[0]);
-        }
-    };
-
-    const handleUploadQualitative = async () => {
-        if (!qualitativeFile) {
-            setAlertMessage("Por favor, selecciona un archivo para calificaciones cualitativas.");
-            setAlertType("error");
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setFeedback({
+                message: "Por favor, selecciona un archivo.",
+                type: "error",
+            });
             return;
         }
         setLoading(true);
-        const response = await uploadQualitativeGrades(token, qualitativeFile);
+        const response = await uploadService(token, selectedFile);
         setLoading(false);
 
         if (response && 'error' in response) {
-            setAlertMessage(response.error);
-            setAlertType("error");
+            setFeedback({ message: response.error, type: "error" });
         } else {
-            setAlertMessage("Calificaciones cualitativas subidas correctamente.");
-            setAlertType("success");
+            setFeedback({ message: "Archivo subido correctamente.", type: "success" });
         }
 
-        // Limpiar archivo
-        setQualitativeFile(null);
+        setSelectedFile(null);
+
         setTimeout(() => {
-            setAlertMessage(null);
-            setAlertType(undefined);
-        }, 3000);
-    };
-
-    const handleUploadQuantitative = async () => {
-        if (!quantitativeFile) {
-            setAlertMessage("Por favor, selecciona un archivo para calificaciones cuantitativas.");
-            setAlertType("error");
-            return;
-        }
-        setLoading(true);
-        const response = await uploadQuantitativeGrades(token, quantitativeFile);
-        setLoading(false);
-
-        if (response && 'error' in response) {
-            setAlertMessage(response.error);
-            setAlertType("error");
-        } else {
-            setAlertMessage("Calificaciones cuantitativas subidas correctamente.");
-            setAlertType("success");
-        }
-
-        // Limpiar archivo
-        setQuantitativeFile(null);
-        setTimeout(() => {
-            setAlertMessage(null);
-            setAlertType(undefined);
+            setFeedback(null);
         }, 3000);
     };
 
@@ -261,71 +413,82 @@ const FileUploadComponent: React.FC<{ token: string }> = ({ token }) => {
         <Box display="flex" flexDirection="column" gap={2}>
             {loading && <CircularProgress />}
 
-            {alertMessage && alertType && (
-                <Alert severity={alertType}>{alertMessage}</Alert>
+            {feedback && (
+                <Snackbar
+                    open={!!feedback}
+                    autoHideDuration={2000}
+                    onClose={() => setFeedback(null)}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    sx={{ marginTop: '70px' }}
+                >
+                    <Alert
+                        severity={feedback.type}
+                        sx={{ width: 'auto' }}
+                    >
+                        {feedback.message}
+                    </Alert>
+                </Snackbar>
             )}
 
-            {/* Tarjeta para calificaciones cualitativas */}
-            <StyledCard>
+            <Card
+                sx={{
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    borderRadius: "10px",
+                    padding: 2,
+                }}
+            >
                 <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        Subir Calificaciones Cualitativas
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {qualitativeFile ? `Archivo seleccionado: ${qualitativeFile.name}` : "No se ha seleccionado ningún archivo"}
-                    </Typography>
-                    <input
-                        accept=".xlsx"
-                        id="upload-qualitative"
-                        type="file"
-                        onChange={handleQualitativeFileChange}
-                        style={{ display: 'none' }}
-                    />
-                    <label htmlFor="upload-qualitative">
-                        <Button variant="contained" color="primary" component="span">
-                            Seleccionar Archivo
-                        </Button>
-                    </label>
-                    <StyledButton
-                        onClick={handleUploadQualitative}
-                        disabled={loading || !qualitativeFile}
-                    >
-                        Enviar Cualitativas
-                    </StyledButton>
-                </CardContent>
-            </StyledCard>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        <Typography variant="h6" fontWeight="bold" align="center">
+                            {title}
+                        </Typography>
+                        <Tooltip title={helpMessage}>
+                            <IconButton>
+                                <HelpOutlineIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
 
-            {/* Tarjeta para calificaciones cuantitativas */}
-            <StyledCard>
-                <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        Subir Calificaciones Cuantitativas
+                    <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
+                        {selectedFile ? `Archivo seleccionado: ${selectedFile.name}` : "No se ha seleccionado ningún archivo"}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {quantitativeFile ? `Archivo seleccionado: ${quantitativeFile.name}` : "No se ha seleccionado ningún archivo"}
-                    </Typography>
-                    <input
-                        accept=".xlsx"
-                        id="upload-quantitative"
-                        type="file"
-                        onChange={handleQuantitativeFileChange}
-                        style={{ display: 'none' }}
-                    />
-                    <label htmlFor="upload-quantitative">
-                        <Button variant="contained" color="primary" component="span">
-                            Seleccionar Archivo
-                        </Button>
-                    </label>
-                    <StyledButton
-                        onClick={handleUploadQuantitative}
-                        disabled={loading || !quantitativeFile}
+                    <Box display="flex" alignItems="center" sx={{ marginTop: 2 }}>
+                        <label htmlFor={inputId}>
+                            <Button variant="contained" component="span" sx={{ marginRight: 2 }}>
+                                Seleccionar Archivo
+                            </Button>
+                        </label>
+                        <input
+                            accept=".xlsx"
+                            id={inputId}
+                            type="file"
+                            onChange={handleFileChange}
+                            style={{ display: "none" }}
+                        />
+                    </Box>
+
+                    <Button
+                        onClick={handleUpload}
+                        disabled={loading || !selectedFile}
+                        sx={{
+                            backgroundColor: selectedFile ? 'red' : 'lightgray',
+                            color: selectedFile ? 'white' : 'black',
+                            '&:hover': {
+                                backgroundColor: selectedFile ? 'darkred' : 'lightgray',
+                            },
+                            marginTop: 2,
+                            display: "block",
+                            marginLeft: "auto",
+                        }}
                     >
-                        Enviar Cuantitativas
-                    </StyledButton>
+                        Enviar
+                    </Button>
                 </CardContent>
-            </StyledCard>
+            </Card>
         </Box>
     );
 };
 
 export default FileUploadComponent;
+
+

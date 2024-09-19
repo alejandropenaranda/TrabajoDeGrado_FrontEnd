@@ -13,3 +13,15 @@ export interface uploadGradesResponse{
 export interface uploadGradesError{
     error: string;
 }
+
+export interface SchoolsAvergaeGradesItem{
+    escuela: string;
+    promedio_cuantitativo: number;
+    promedio_cualitativo: number; 
+}
+
+export type SchoolsAvergaeGradesResponse = SchoolsAvergaeGradesItem[]
+
+export interface SchoolsAvergaeGradesError{
+    error: string;
+}

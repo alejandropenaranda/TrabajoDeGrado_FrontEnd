@@ -1,4 +1,5 @@
 import { API_URL } from "../auth/constants";
+import { SchoolsAvergaeGradesError, SchoolsAvergaeGradesResponse } from "../types/AdminTypes";
 import { AverageGradesError, AverageGradesResponse, AvergaGradesRegistersResponse } from "../types/TeacherTypes";
 
 export async function getAverageGrades(token: string, id: number) {
@@ -102,6 +103,33 @@ export async function getAverageGradesTeacher(token: string, id: number) {
 
         } else {
             const json = (await res.json()) as AverageGradesError
+            return json
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getAverageGradesAllSchools(token: string) {
+    try {
+        const res = await fetch(
+            `${API_URL}/average_grades_faculty`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Token ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        if (res.ok) {
+            const json = (await res.json()) as SchoolsAvergaeGradesResponse
+            return json
+
+        } else {
+            const json = (await res.json()) as SchoolsAvergaeGradesError
             return json
         }
 

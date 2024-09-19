@@ -4,28 +4,32 @@ import { ChartContainer, ChartsTooltip, ChartsXAxis, ChartsYAxis } from '@mui/x-
 import { BarPlot } from '@mui/x-charts/BarChart';
 import { LinePlot } from '@mui/x-charts/LineChart';
 import { ChartsAxisHighlight } from '@mui/x-charts/ChartsAxisHighlight';
-import { FacSchoolGradesResponse, SchoolTeachersAvergaeGradesResponse } from '../types/DirectorTypes';
+import { SchoolsAvergaeGradesResponse } from '../types/AdminTypes';
+import { FacSchoolGradesResponse } from '../types/DirectorTypes';
 
-interface SchoolTeachersChartProps {
+interface SchoolsChartProps {
   schoolData: FacSchoolGradesResponse;
-  data: SchoolTeachersAvergaeGradesResponse;
+  data: SchoolsAvergaeGradesResponse;
 }
 
-const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolData }) => {
+const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
+  console.log(data);
+  console.log(schoolData)
+  
   const dataset = data.map((item) => ({
-    docente: item.docente,
-    cuantitativo: item.promedio_cuantitativo,
-    cualitativo: item.promedio_cualitativo,
+    escuela: item.escuela,
+    cuantitativo: parseFloat(item.promedio_cuantitativo.toFixed(2)),
+    cualitativo: parseFloat(item.promedio_cualitativo.toFixed(2)),
   }));
 
-  const schoolAverageCuantitativo = new Array(dataset.length).fill(schoolData.promedio_escuela_cuantitativo);
-  const schoolAverageCualitativo = new Array(dataset.length).fill(schoolData.promedio_escuela_cualitativo);
+  const FacAverageCuantitativo = new Array(dataset.length).fill(schoolData.promedio_facultad_cuantitativo.toFixed(2));
+  const FacAverageCualitativo = new Array(dataset.length).fill(schoolData.promedio_facultad_cualitativo.toFixed(2));
 
   const legendItems = [
-    { label: 'Docente Cuantitativo', color: 'red' },
-    { label: 'Docente Cualitativo', color: '#2F4858' },
-    { label: 'Escuela Cuantitativo', color: 'blue' },
-    { label: 'Escuela Cualitativo', color: 'green' },
+    { label: 'Escuela Cuantitativo', color: 'red' },
+    { label: 'Escuela Cualitativo', color: '#2F4858' },
+    { label: 'Facultad Cuantitativo', color: 'blue' },
+    { label: 'Facultad Cualitativo', color: 'green' },
   ];
 
   return (
@@ -40,7 +44,7 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '10px', mt: '20px' }}>
-          Promedios de desempeño por docente
+          Promedios de calificaciones por Escuela
         </Typography>
         <Box sx={{ padding: '10px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px' }}>
           {legendItems.map((item) => (
@@ -62,35 +66,35 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
             {
               type: 'bar',
               data: dataset.map(item => item.cuantitativo),
-              label: 'Docente Cuantitativo',
+              label: 'Escuela Cuantitativo',
               color: 'red',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'bar',
               data: dataset.map(item => item.cualitativo),
-              label: 'Docente Cualitativo',
+              label: 'Escuela Cualitativo',
               color: '#2F4858',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'line',
-              data: schoolAverageCuantitativo,
-              label: 'Escuela Cuantitativo',
+              data: FacAverageCuantitativo,
+              label: 'Facultad Cuantitativo',
               color: 'blue',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'line',
-              data: schoolAverageCualitativo,
-              label: 'Escuela Cualitativo',
+              data: FacAverageCualitativo,
+              label: 'Facultad Cualitativo',
               color: 'green',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
           ]}
           xAxis={[
             {
-              data: dataset.map((item) => item.docente),
+              data: dataset.map((item) => item.escuela),
               scaleType: 'band',
               id: 'x-axis-id',
               labelStyle: {
@@ -114,7 +118,7 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
               id: 'y-axis-id',
             },
           ]}
-          width={1600}
+          width={700}
           height={400}
           margin={{ bottom: 80 }}
         >
@@ -130,4 +134,4 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
   );
 };
 
-export default SchoolTeachersChart;
+export default SchoolsChart;

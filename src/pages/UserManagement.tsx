@@ -29,11 +29,15 @@ const UserManagement: React.FC = () => {
         { headerName: 'Escuela', fieldName: 'escuela.nombre' },
     ];
 
+    console.log (usersData);
+
     return (
         <>
             <SideBar>
                 <Grid sx={{height: '100vh', mt: 5}}>
-                    <UsersTableComponent name={"Gestionar usuarios"} columns={columns} data={usersData} token={token}/>
+                    {usersData && (
+                        <UsersTableComponent name={"Gestionar usuarios"} columns={columns} data={usersData} token={token}/>
+                    )}
                 </Grid>
             </SideBar>
             
