@@ -23,7 +23,7 @@ const TeacherRankingTable: React.FC<TeacherRankingTableProps> = ({ data, escuela
                 }}
             >
                 <Typography variant="h6" sx={{ fontWeight: 500 }}>
-                    Ranking docentes escuela de ingeniería {escuela}
+                    Top 10 de desempeño para docentes de la escuela de ingeniería {escuela}
                 </Typography>
             </Box>
         </Grid>

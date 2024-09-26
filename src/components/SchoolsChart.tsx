@@ -13,9 +13,7 @@ interface SchoolsChartProps {
 }
 
 const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
-  console.log(data);
-  console.log(schoolData)
-  
+    
   const dataset = data.map((item) => ({
     escuela: item.escuela,
     cuantitativo: parseFloat(item.promedio_cuantitativo.toFixed(2)),

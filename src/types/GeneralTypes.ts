@@ -7,6 +7,7 @@ export interface User {
     is_director: boolean;
     is_profesor: boolean;
     escuela: Escuela;
+    password?: string; 
 }
 
 export interface Escuela {

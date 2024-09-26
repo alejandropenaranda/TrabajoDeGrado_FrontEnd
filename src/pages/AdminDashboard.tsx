@@ -39,7 +39,7 @@ const AdminDashboard: React.FC = () => {
     }, [token, user.escuela.id]);
 
 
-    const helpMessageQuali = "Los archivos de calificaciones cualitativas deben contener las columnas: 'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'COMENTARIO', 'MATERIA' y 'CODIGO_MATERIA' para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro."
+    const helpMessageQuali = "Los archivos de calificaciones cualitativas deben contener las columnas: 'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'COMENTARIO', 'MATERIA' y 'CODIGO_MATERIA' para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro. Si alguno de los comentarios sobrepasa los 2050 caracteres no sera tenido en cuenta durante el procesamiento."
 
     const helpMessageQuanti = "Los archivos de calificaciones cuantitativas deben contener las columnas: 'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'PROM_PREGUNTA9', 'PROM_PREGUNTA10', 'PROM_PREGUNTA11', 'PROM_PREGUNTA12', 'PROM_PREGUNTA13', 'PROM_PREGUNTA14',  'PROM_PREGUNTA15', 'PROM_PREGUNTA16', 'PROM_PREGUNTA17', 'PROM_PREGUNTA18', 'PROM_PREGUNTA19', 'PROM_PREGUNTA20', 'PROM_DOCENTE', 'MATERIA' y 'CODIGO_MATERIA' para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro."
 
