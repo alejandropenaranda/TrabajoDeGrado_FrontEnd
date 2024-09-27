@@ -16,20 +16,18 @@ const TeacherViewer: React.FC = () => {
     const nombre = location.state?.nombre as string | undefined;
 
     return (
-        <>
-            <SideBar>
-                <Grid>
-                    {numericId !== null ? (
-                        <>
-                            <h1>Docente {nombre}</h1>
-                            <MyTabs token={token} id={numericId} />
-                        </>
-                    ) : (
-                        <p>Error: ID inválido</p>
-                    )}
-                </Grid>
-            </SideBar>
-        </>
+        <SideBar>
+            <Grid>
+                {numericId !== null ? (
+                    <>
+                        <h1>Docente {nombre}</h1>
+                        <MyTabs token={token} id={numericId} />
+                    </>
+                ) : (
+                    <p>Error: ID inválido</p>
+                )}
+            </Grid>
+        </SideBar>
     );
 };
 

@@ -1,6 +1,6 @@
 import { API_URL } from "../auth/constants";
 import { userError, userResponse } from "../types/AdminTypes";
-import { SelfUserPasswordChangeError, SelfUserPasswordChangeResponse } from "../types/GeneralTypes";
+import { createUserError, createUserResponse, SelfUserPasswordChangeError, SelfUserPasswordChangeResponse } from "../types/GeneralTypes";
 
 export async function getUsers(token: string) {
     try {
@@ -40,7 +40,7 @@ export async function modifyUser(token: string, userId: number, body: object) {
                     Authorization: `Token ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(body),  // Asegúrate de incluir el cuerpo de la solicitud
+                body: JSON.stringify(body),
             }
         );
 
@@ -54,7 +54,7 @@ export async function modifyUser(token: string, userId: number, body: object) {
 
     } catch (error) {
         console.error("Error updating user:", error);
-        throw error; // Puedes lanzar el error para manejarlo en el componente
+        throw error;
     }
 }
 
@@ -68,7 +68,7 @@ export async function selfModifyUserPassword(token: string, body: object) {
                     Authorization: `Token ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(body),  // Asegúrate de incluir el cuerpo de la solicitud
+                body: JSON.stringify(body),
             }
         );
 
@@ -82,6 +82,35 @@ export async function selfModifyUserPassword(token: string, body: object) {
 
     } catch (error) {
         console.error("Error updating user:", error);
-        throw error; // Puedes lanzar el error para manejarlo en el componente
+        throw error;
+    }
+}
+
+
+export async function createUserService(token: string, body: object) {
+    try {
+        const res = await fetch(
+            `${API_URL}/register`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Token ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body), 
+            }
+        );
+
+        if (res.ok) {
+            const json = await res.json() as createUserResponse;
+            return json;
+        } else {
+            const json = await res.json() as createUserError;
+            return json;
+        }
+
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
     }
 }

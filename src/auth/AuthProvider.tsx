@@ -30,10 +30,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [accessToken, setAccessToken] = useState<string>("");
     const [user, setUser] = useState<User>();
 
-    function getAccessToken() {
-        return accessToken;
-    }
-
     useEffect(() => {
         const loggedUserJSON = localStorage.getItem("user");
         if (loggedUserJSON) {
@@ -47,6 +43,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setIsAuthenticated(true);
         }
     }, []);
+
+    function getAccessToken() {
+        return accessToken;
+    }
 
     function saveUser(userData: AuthResponse) {
         setAccessToken(userData.token);

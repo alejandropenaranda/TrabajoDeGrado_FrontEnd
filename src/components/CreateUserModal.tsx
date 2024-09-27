@@ -2,24 +2,25 @@ import React, { useState } from 'react';
 import { Modal, Box, Typography, TextField, Switch, FormControlLabel, Button, InputAdornment, IconButton, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { getSchoolsResponse, User } from '../types/GeneralTypes';
+import { createUser, getSchoolsResponse } from '../types/GeneralTypes';
 
 interface CreateUserModalProps {
     open: boolean;
-    schools: getSchoolsResponse; // List of schools
+    schools: getSchoolsResponse;
     onClose: () => void;
-    onSave: (newUser: User) => void;
+    onSave: (newUser: createUser) => void;
 }
 
 const CreateUserModal: React.FC<CreateUserModalProps> = ({ open, onClose, onSave, schools }) => {
-    const [newUser, setNewUser] = useState({
+    const [newUser, setNewUser] = useState<createUser>({
         nombre: '',
         email: '',
         codigo: '',
+        password:'',
         is_admin: false,
         is_director: false,
         is_profesor: false,
-        escuela: null, // Allow null for school selection
+        escuela_id: undefined,
     });
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -48,14 +49,9 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ open, onClose, onSave
             return;
         }
         setPasswordError(null);
-        
-        // Ensure all required fields are included in the object
-        const userWithPassword: User = {
-            ...newUser,
-            id: 0, // Generate or assign an ID as needed
-            escuela: newUser.escuela, // Assign the selected school
-        };
-
+        newUser.password = password
+        const userWithPassword = newUser
+    
         onSave(userWithPassword);
     };
 
@@ -124,8 +120,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ open, onClose, onSave
                     <InputLabel id="escuela-label">Escuela</InputLabel>
                     <Select
                         labelId='escuela-label'
-                        value={newUser.escuela || ''}
-                        onChange={(e) => handleInputChange('escuela', e.target.value === 'Ninguna' ? null : e.target.value)}
+                        value={newUser.escuela_id || ''}
+                        onChange={(e) => handleInputChange('escuela_id', e.target.value === 'Ninguna' ? null : e.target.value)}
                         label="Escuela"
                         sx={{ '& .MuiInputLabel-root': { top: 0, left: 14 },
                               '& .MuiSelect-root': { display: 'flex', alignItems: 'center' } }}
@@ -134,7 +130,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ open, onClose, onSave
                             <em>Ninguna</em>
                         </MenuItem>
                         {schools.map((school) => (
-                            <MenuItem key={school.id} value={school.nombre}>
+                            <MenuItem key={school.id} value={school.id}>
                                 {school.nombre}
                             </MenuItem>
                         ))}

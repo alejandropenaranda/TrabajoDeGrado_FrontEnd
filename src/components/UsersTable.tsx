@@ -6,10 +6,10 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { userResponse } from '../types/AdminTypes';
-import { ColumnConfig, User } from '../types/GeneralTypes';
+import { ColumnConfig, createUser, User } from '../types/GeneralTypes';
 import UsersTableFilter from './UsersTableFilter';
 import EditUserModal from './EditUserModal';
-import { modifyUser } from '../services/UserManagementService';
+import { createUserService, modifyUser } from '../services/UserManagementService';
 import CreateUserModal from './CreateUserModal';
 import { getSchools } from '../services/SchoolService';
 
@@ -64,8 +64,12 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
         }
     }, [feedback]);
 
-    const uniqueSchools = Array.from(new Set((data || []).map(item => item.escuela.nombre)));
 
+    const uniqueSchools = Array.from(new Set(
+        (data || []).map(item => item.escuela ? item.escuela.nombre : null)
+        .filter(school => school !== null) // Filtra valores nulos
+    ));
+    
     const handleChangePage = (__event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -146,15 +150,32 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
         setIsModalCreateUserOpen(false);
     };
 
-    const handleCreateUser = (newUser: any) => {
-        // Lógica para guardar el nuevo usuario
+    const handleCreateUser = async (newUser: createUser) => {
         console.log('Nuevo usuario creado:', newUser);
-        // Aquí podrías hacer una llamada a la API para crear el usuario
-        handleCloseModal(); // Cierra el modal después de guardar
+        try {
+            const result = await createUserService(token, newUser);
+            console.log(result);
+    
+            if ('user' in result && result.user && 'id' in result.user) {
+                setUsers(prevUsers => [...prevUsers, result.user]);
+                setFeedback({ message: 'Usuario creado correctamente.', type: 'success' });
+            } else {
+                setFeedback({ message: 'Error al crear el usuario.', type: 'error' });
+            }
+        } catch (error) {
+            console.error('Error al crear el usuario:', error);
+            setFeedback({ message: 'Error al crear el usuario.', type: 'error' });
+        } finally {
+            setIsModalOpen(false);
+            setSelectedUser(null);
+            setTimeout(() => setFeedback(null), 2000);
+        }
+        handleCloseCreateModal();
     };
 
     const filteredResults = (users || []).filter(item =>
-        (selectedSchools.length === 0 || selectedSchools.includes(item.escuela.nombre)) &&
+        (selectedSchools.length === 0 || 
+         (item.escuela && selectedSchools.includes(item.escuela.nombre))) && // Verifica que escuela no sea null
         (!isDirectorChecked || item.is_director === true) &&
         (!isAdminChecked || item.is_admin === true) && // Nuevo filtro "Es admin"
         item.nombre.toLowerCase().includes(searchTerm)
@@ -351,3 +372,4 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
 };
 
 export default UsersTableComponent;
+ 
