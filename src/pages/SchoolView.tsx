@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
-import { ColumnConfig } from "../components/GradesTable";
+import { ColumnConfig } from "../types/GeneralTypes"
 import { useEffect, useState } from "react";
 import { getAverageGradesSchool } from "../services/AverageGrades";
 import { useAuth } from "../auth/AuthProvider";

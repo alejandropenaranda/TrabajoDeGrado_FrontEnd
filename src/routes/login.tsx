@@ -116,7 +116,7 @@ export default function Login() {
                 <Avatar sx={{ m: 1, bgcolor: "#ff0000" }}>
                     <LockOutlined />
                 </Avatar>
-                <Typography variant="h5">Login</Typography>
+                <Typography variant="h5">Ingreso</Typography>
 
                 <Grid item sx={{ mt: 1 }}>
                     {!!alertMessage && (

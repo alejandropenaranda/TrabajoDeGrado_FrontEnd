@@ -14,8 +14,8 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
   const TeacherGrade = data.promedio_docente;
 
   const Chartnames = [
-    'Promedio docentes de la facultad',
-    'Promedio docentes de la escuela',
+    'Promedio docentes \n de la facultad',
+    'Promedio docentes \n de la escuela',
     'Promedio del docente'
   ];
 
@@ -41,20 +41,27 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
         <BarChart
           series={[
             {
-              data: [FacultyGrade, SchoolGrade, TeacherGrade],
+              data: [FacultyGrade, SchoolGrade, TeacherGrade],              
             },
           ]}
-          height={290}
+          height={372}
           grid={{ horizontal: true }}
           xAxis={[{
             data: Chartnames,
             scaleType: 'band',
+            categoryGapRatio: 0.7,
             colorMap: {
               type: 'ordinal',
               values: Chartnames,
-              colors: ['red', '#6D4B9A', '#2F4858'],
+              colors: ['red', '#6D4B9A', '#2F4858'],       
             }
           }]}
+          yAxis={[
+            {
+              min: 0,
+              max: 5,
+            }
+          ]}
           margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
         />
       </Grid>

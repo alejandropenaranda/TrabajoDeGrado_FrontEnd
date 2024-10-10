@@ -43,7 +43,7 @@ function TabPanel(props: TabPanelProps) {
         mt: 0,
       }}
     >
-      {value === index && <Grid sx={{ height: '100%', gap: '10px' }}>{children}</Grid>}
+      {value === index && <Grid sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>{children}</Grid>}
     </Grid>
   );
 }
@@ -196,16 +196,19 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
               <CommentViewer data={bestWorstCommentData} />
             </Grid>
           )}
-          {cuantFortDebData && (
-            <Grid item xs={12}>
-              <CuantFortDeb valoraciones={cuantFortDebData.valoraciones} />
-            </Grid>
-          )}
-          {cualFortDebData && (
-            <Grid item xs={12}>
-              <CualFortDeb valoraciones={cualFortDebData.valoraciones} />
-            </Grid>
-          )}
+
+          <Grid container spacing={2} direction="row" wrap="wrap" justifyContent="space-between" sx={{ pl: '16px', pt: '16px' }}>
+            {cuantFortDebData && (
+              <Grid item xs={12} md={6}>
+                <CuantFortDeb valoraciones={cuantFortDebData.valoraciones} />
+              </Grid>
+            )}
+            {cualFortDebData && (
+              <Grid item xs={12} md={6}>
+                <CualFortDeb valoraciones={cualFortDebData.valoraciones} />
+              </Grid>
+            )}
+          </Grid>
         </Grid>
       </TabPanel>
     </Box>

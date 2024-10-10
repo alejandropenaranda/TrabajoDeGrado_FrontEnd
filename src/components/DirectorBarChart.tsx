@@ -74,16 +74,17 @@ const DirectorBarChart: React.FC<DirectorBarChartProps> = ({ data }) => {
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
           backgroundColor: 'white',
           width: '100%',
-          maxWidth: '800px', // Ancho máximo para que el gráfico no se desborde
-          overflow: 'hidden', // Asegura que no haya desbordamiento
+          maxWidth: '800px', 
+          overflow: 'hidden',
         }}
       >
         <Typography variant="h6" sx={titleStyles}>
           Desempeño de la Escuela
         </Typography>
-        <Box sx={{ height: 400 }}>
+        <Box sx={{ height: 455 }}>
           <BarChart
             dataset={dataset}
+            grid={{ horizontal: true }}
             xAxis={[{ scaleType: 'band', dataKey: 'category' }]}
             series={[
               { dataKey: 'Escuela', label: 'Escuela', color: 'red', valueFormatter },

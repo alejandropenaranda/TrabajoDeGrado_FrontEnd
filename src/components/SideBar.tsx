@@ -156,7 +156,7 @@ export default function SideBar({ children }: SideBarProps) {
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(role));
 
   const handleNavigation = (route: string) => {
-    navigate(route); // Redirigir a la ruta especificada
+    navigate(route);
   };
 
   return (
@@ -220,8 +220,8 @@ export default function SideBar({ children }: SideBarProps) {
           ))}
         </List>
       </HoverableDrawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Typography sx={{pt:"60px", color:'#8f8f8f', fontSize:22}}>Sistema de análisis de evaluaciones docente</Typography>
+      <Box component="main" sx={{mt:'60px', flexGrow: 1, p: 3, }}>
+        <Typography sx={{color:'#8f8f8f', fontSize:22}}>Sistema de análisis de evaluaciones docente</Typography>
           {children}
       </Box>
     </Box>

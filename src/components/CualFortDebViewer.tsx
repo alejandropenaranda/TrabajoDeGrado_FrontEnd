@@ -36,6 +36,9 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 padding: 3,
                 backgroundColor: 'white',
+                display: 'flex',
+                flexDirection: 'column',
+                height:'100%'
             }}
         >
             <Typography variant="h6" align="center" fontWeight="bold" gutterBottom>
@@ -44,14 +47,14 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
 
             <Grid container spacing={1} sx={{ marginBottom: 2,  mt:2  }}>
                 <Grid item xs={12}>
-                    <Grid container spacing={1} justifyContent="center">
-                        <Typography variant="subtitle1" display="inline" fontWeight="bold">
+                    <Grid container spacing={1} justifyContent="center" alignItems="center"> {/* Agregando alignItems */}
+                        <Typography variant="subtitle1" display="inline" fontWeight="bold" sx={{ marginRight: 1 }}> {/* Añadir margen derecho para separación */}
                             Categorías:
                         </Typography>
                         {['Muy Pobre', 'Pobre', 'Neutro', 'Bueno', 'Muy Bueno'].map((label, index) => (
                             <Chip
                                 key={index}
-                                label={`${label} (${index + 1})`}
+                                label={`${label}`}
                                 sx={{
                                     backgroundColor: ['red', 'orange', 'yellow', 'lightgreen', 'green'][index],
                                     color: 'black',
@@ -73,8 +76,8 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                         const { label, color } = getTagProps(value);
                         return (
                             <Grid container spacing={1} key={key} sx={{ marginBottom: 2 }}>
-                                <Grid item xs={12}>
-                                    <Typography variant="subtitle1" display="inline" fontWeight="bold">
+                                <Grid item xs={12} justifyContent="center" alignItems="center">
+                                    <Typography variant="subtitle1" display="inline" fontWeight="bold" sx={{ marginRight: 1 }}>
                                         {key}:
                                     </Typography>
                                     <Chip
@@ -82,8 +85,7 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                                         sx={{
                                             backgroundColor: color,
                                             color: 'black',
-                                            fontWeight: 'bold',
-                                            marginLeft: 1,
+                                            fontWeight: 'bold'
                                         }}
                                     />
                                 </Grid>
@@ -100,8 +102,8 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                         const { label, color } = getTagProps(value);
                         return (
                             <Grid container spacing={1} key={key} sx={{ marginBottom: 2 }}>
-                                <Grid item xs={12}>
-                                    <Typography variant="subtitle1" display="inline" fontWeight="bold">
+                                <Grid item xs={12} justifyContent="center" alignItems="center">
+                                <Typography variant="subtitle1" display="inline" fontWeight="bold" sx={{ marginRight: 1 }}>
                                         {key}:
                                     </Typography>
                                     <Chip
@@ -109,8 +111,7 @@ const CualFortDeb: React.FC<CualFortDebProps> = ({ valoraciones }) => {
                                         sx={{
                                             backgroundColor: color,
                                             color: 'black',
-                                            fontWeight: 'bold',
-                                            marginLeft: 1,
+                                            fontWeight: 'bold'
                                         }}
                                     />
                                 </Grid>

@@ -103,7 +103,7 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
                     }px)`
               },
               tickLabelStyle: {
-                angle: 45,
+                angle: 20,
                 textAnchor: 'start',
                 fontSize: 12,
               },

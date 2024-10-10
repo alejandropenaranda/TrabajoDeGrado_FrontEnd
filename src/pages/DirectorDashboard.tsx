@@ -107,12 +107,3 @@ const DirectorDashboard: React.FC<{}> = () => {
 };
 
 export default DirectorDashboard;
-
-// {/* Tercera fila: DirectorRedirectionButtons */}
-// <Grid item xs={12} md={4}>
-// <Grid container spacing={3} alignItems="center" justifyContent="center" style={{ height: '100%' }}>
-//     <Grid item xs={12}>
-//         <DirectorRedirectionButtons />
-//     </Grid>
-// </Grid>
-// </Grid>
