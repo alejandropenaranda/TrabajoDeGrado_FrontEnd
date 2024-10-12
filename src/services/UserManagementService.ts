@@ -29,7 +29,6 @@ export async function getUsers(token: string) {
     }
 }
 
-
 export async function modifyUser(token: string, userId: number, body: object) {
     try {
         const res = await fetch(
@@ -85,7 +84,6 @@ export async function selfModifyUserPassword(token: string, body: object) {
         throw error;
     }
 }
-
 
 export async function createUserService(token: string, body: object) {
     try {

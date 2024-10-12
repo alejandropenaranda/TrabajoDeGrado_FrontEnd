@@ -16,28 +16,29 @@ const AdminDashboard: React.FC = () => {
     const user = auth.getUser();
     const token = auth.getAccessToken();
 
-    if (!user) {
-        return <p>User not found</p>;
-    }
-
     const [facSchoolAverageGradesData, setFacSchoolAverageGradesData] = useState<any>(null);
     const [SchoolsAverageGradesData, setSchoolAverageGradesData] = useState<any>(null);
 
-
     useEffect(() => {
-        const fetchSchoolsAverageGradesData = async () => {
-            const data = await getAverageGradesAllSchools(token);
-            setSchoolAverageGradesData(data);
-        };
+        if (user) {
+            const fetchSchoolsAverageGradesData = async () => {
+                const data = await getAverageGradesAllSchools(token);
+                setSchoolAverageGradesData(data);
+            };
+    
+            const fetchFacSchoolAverageGradesData = async () => {
+                const data = await getFacSchoolAverageGrades(token, user.escuela.id);
+                setFacSchoolAverageGradesData(data);
+            };
+    
+            fetchFacSchoolAverageGradesData();
+            fetchSchoolsAverageGradesData();
+        }
+    }, [token, user]);
 
-        const fetchFacSchoolAverageGradesData = async () => {
-            const data = await getFacSchoolAverageGrades(token, user.escuela.id);
-            setFacSchoolAverageGradesData(data);
-        };
-        fetchFacSchoolAverageGradesData()
-        fetchSchoolsAverageGradesData();
-    }, [token, user.escuela.id]);
-
+    if (!user) {
+        return <p>User not found</p>;
+    }
 
     const helpMessageQuali = "Los archivos de calificaciones cualitativas deben contener las columnas: 'SEMESTRE', 'DOCENTE', 'CEDULA', 'ESCUELA', 'COMENTARIO', 'MATERIA' y 'CODIGO_MATERIA' para su correcto procesamiento. Ademas no deben haber informaciones faltantes para ningun registro. Si alguno de los comentarios sobrepasa los 2050 caracteres no sera tenido en cuenta durante el procesamiento."
 

@@ -1,21 +1,21 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { AuthResponse } from "../types/Authtypes";
-import { User } from "../types/GeneralTypes"
+import { User } from "../types/GeneralTypes";
 
 interface AuthProviderProps {
     children: React.ReactNode;
 }
 
 interface AuthContextType {
-    isAuthenticated: boolean;
+    isAuthenticated: boolean | null;
     getAccessToken: () => string;
     saveUser: (userData: AuthResponse) => void;
-    getUser: () => (User | undefined);
+    getUser: () => User | undefined;
     signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    isAuthenticated: false,
+    isAuthenticated: null,
     getAccessToken: () => "",
     saveUser: () => {},
     getUser: () => ({} as User | undefined),
@@ -23,24 +23,23 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-        const token = localStorage.getItem('token');
-        return !!token;
-      });
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const [accessToken, setAccessToken] = useState<string>("");
     const [user, setUser] = useState<User>();
 
     useEffect(() => {
         const loggedUserJSON = localStorage.getItem("user");
-        if (loggedUserJSON) {
+        const loggedUserToken = localStorage.getItem("token");
+
+        if (loggedUserJSON && loggedUserToken) {
+            console.log("Este es el token que obtiene del storage: " + loggedUserToken);
+            setAccessToken(loggedUserToken);
             const user = JSON.parse(loggedUserJSON) as User;
             setUser(user);
-        }
-
-        const loggedUserToken = localStorage.getItem("token");
-        if (loggedUserToken) {
-            setAccessToken(loggedUserToken);
             setIsAuthenticated(true);
+            console.log("Cargué los datos de autenticación");
+        } else {
+            setIsAuthenticated(false);
         }
     }, []);
 
@@ -50,22 +49,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     function saveUser(userData: AuthResponse) {
         setAccessToken(userData.token);
-        localStorage.setItem("token", JSON.stringify(userData.token));
+        localStorage.setItem("token", userData.token);
         setIsAuthenticated(true);
         setUser(userData.user);
         localStorage.setItem("user", JSON.stringify(userData.user));
     }
 
-    function getUser(){
+    function getUser() {
         return user;
     }
 
-    function signOut (){
+    function signOut() {
         setIsAuthenticated(false);
         setAccessToken("");
         setUser(undefined);
         localStorage.removeItem("token");
-        localStorage.removeItem("user")
+        localStorage.removeItem("user");
+    }
+
+    if (isAuthenticated === null) {
+        return <div>Loading...</div>;
     }
 
     return (

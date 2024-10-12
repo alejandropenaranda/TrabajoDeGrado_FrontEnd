@@ -23,6 +23,7 @@ export default function Login() {
     if (auth.isAuthenticated) {
         return <Navigate to='/' />;
     }
+    
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

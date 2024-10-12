@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import SideBar from "../components/SideBar";
-import{ User } from "../types/Authtypes";
+import{ User } from "../types/GeneralTypes";
 
 export default function Home() {
 
