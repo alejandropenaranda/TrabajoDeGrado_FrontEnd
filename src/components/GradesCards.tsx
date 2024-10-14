@@ -7,9 +7,6 @@ interface TeacherGradesCardsProps {
 
 const TeacherGradesCards: React.FC<TeacherGradesCardsProps> = ({ data }) => {
 
-    // Modifica la propiedad "xs" en los elementos Grid (item) para cambiar la disposición de las tarjetas. 
-    // Por ejemplo, para mostrar las tarjetas en una sola columna en pantallas más pequeñas, cambia "xs={12}" a un valor menor o usa "md" para otros tamaños de pantalla.
-
     return (
         <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} md={4}>

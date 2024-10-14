@@ -62,7 +62,7 @@ const TeacherGradesBarChart: React.FC<TeacherGradesBarChartProps> = ({ data, nom
               max: 5,
             }
           ]}
-          margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+          margin={{ top: 10, bottom: 40, left: 30, right: 10 }}
         />
       </Grid>
     </Grid>

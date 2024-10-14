@@ -43,17 +43,17 @@ const DirectorBarChart: React.FC<DirectorBarChartProps> = ({ data }) => {
 
   const dataset = [
     {
-      category: 'Promedio General',
+      category: 'Promedio \nGeneral',
       Escuela: SchoolGrade,
       Facultad: FacultyGrade,
     },
     {
-      category: 'Promedio Cualitativo',
+      category: 'Promedio \nCualitativo',
       Escuela: CualitativeSchoolGrade,
       Facultad: CualitativeFacultyGrade,
     },
     {
-      category: 'Promedio Cuantitativo',
+      category: 'Promedio \nCuantitativo',
       Escuela: CuantitativeSchoolGrade,
       Facultad: CuantitativeFacultyGrade,
     },
