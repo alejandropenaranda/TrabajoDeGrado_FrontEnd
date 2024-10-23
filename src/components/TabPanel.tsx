@@ -139,7 +139,7 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
           },
           '& .Mui-selected': {
             color: '#FFFFFF',
-            fontWeight: 550,
+            fontWeight: 500,
           },
         }}
       >

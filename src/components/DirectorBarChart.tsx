@@ -79,7 +79,7 @@ const DirectorBarChart: React.FC<DirectorBarChartProps> = ({ data }) => {
         }}
       >
         <Typography variant="h6" sx={titleStyles}>
-          Desempeño de la Escuela
+          Desempeño Escuela vs Facultad
         </Typography>
         <Box sx={{ height: 455 }}>
           <BarChart

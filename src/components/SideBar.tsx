@@ -160,7 +160,7 @@ export default function SideBar({ children }: SideBarProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: "#F5F5F5"}}>
+    <Box sx={{ display: 'flex', height:'100%', backgroundColor: "#F5F5F5"}}>
       <CssBaseline />
       <AppBar position="fixed" elevation={3} sx={{ bgcolor: "White", color: "#8f8f8f" }}>
         <Toolbar>

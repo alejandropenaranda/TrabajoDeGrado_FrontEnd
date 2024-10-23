@@ -47,18 +47,18 @@ const AdminDashboard: React.FC = () => {
     return (
         <>
             <SideBar>
-                <Grid container spacing={1} direction={'row'} sx={{ p: 4, height: '100vh' }}>
-                    {/* Primera fila */}
-                    <Grid item xs={12} md={6}>
+                <Grid container spacing={1} direction={'row'} sx={{ p: 4, height: '100%'}}>
+
+                    <Grid item sm={12} lg={4} >
                         <WelcomeUserCard token={token} nombre={user.nombre} />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item sm={12} lg={8}>
                         {facSchoolAverageGradesData && SchoolsAverageGradesData && (
                             <SchoolsChart schoolData={facSchoolAverageGradesData} data={SchoolsAverageGradesData} />
                         )}
                     </Grid>
 
-                    {/* Segunda fila */}
+
                     <Grid item xs={12} md={6}>
                         <FileUploadComponent token={token} title={"Subir Calificaciones cualitativas"} helpMessage={helpMessageQuali} uploadService={uploadQualitativeGrades} />
                     </Grid>

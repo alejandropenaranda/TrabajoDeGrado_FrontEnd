@@ -34,7 +34,7 @@ const UserManagement: React.FC = () => {
     return (
         <>
             <SideBar>
-                <Grid sx={{height: '100vh', mt: 5}}>
+                <Grid sx={{height: '100%', mt: 5}}>
                     {usersData && (
                         <UsersTableComponent name={"Gestionar usuarios"} columns={columns} data={usersData} token={token}/>
                     )}

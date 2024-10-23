@@ -35,11 +35,11 @@ const DirectorGradesCards: React.FC<DirectorGradesCardsProps> = ({ data, escuela
                 <Grid container item spacing={3} xs={12} md={12} justifyContent="center" sx={{ display: 'flex', alignItems: 'stretch' }}>
                     {[
                         { title: "Promedio general escuela", value: data.promedio_escuela },
-                        { title: "Promedio cuantitativo escuela", value: data.promedio_escuela_cuantitativo },
                         { title: "Promedio cualitativo escuela", value: data.promedio_escuela_cualitativo },
+                        { title: "Promedio cuantitativo escuela", value: data.promedio_escuela_cuantitativo },
                         { title: "Promedio general facultad", value: data.promedio_facultad },
-                        { title: "Promedio cuantitativo facultad", value: data.promedio_facultad_cuantitativo },
                         { title: "Promedio cualitativo facultad", value: data.promedio_facultad_cualitativo },
+                        { title: "Promedio cuantitativo facultad", value: data.promedio_facultad_cuantitativo },
                     ].map((item, index) => (
                         <Grid item xs={12} sm={4} key={index} sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Card sx={{ borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', flex: 1 }}>

@@ -24,11 +24,30 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
   const FacAverageCualitativo = new Array(dataset.length).fill(schoolData.promedio_facultad_cualitativo.toFixed(2));
 
   const legendItems = [
-    { label: 'Escuela Cuantitativo', color: 'red' },
-    { label: 'Escuela Cualitativo', color: '#2F4858' },
-    { label: 'Facultad Cuantitativo', color: 'blue' },
-    { label: 'Facultad Cualitativo', color: 'green' },
+    { label: 'Cuantitativo Escuela', color: 'red' },
+    { label: 'Cualitativo Escuela', color: '#2F4858' },
+    { label: 'Cuantitativo Facultad', color: 'blue' },
+    { label: 'CualitativoFacultad', color: 'green' },
   ];
+
+  const splitLabel = (label: string, maxLength: number) => {
+    const words = label.split(' ');
+    let currentLine = '';
+    const lines = [];
+
+    for (let word of words) {
+      if (currentLine.length + word.length <= maxLength) {
+        currentLine += word + ' ';
+      } else {
+        lines.push(currentLine.trim());
+        currentLine = word + ' ';
+      }
+    }
+    if (currentLine) {
+      lines.push(currentLine.trim());
+    }
+    return lines.join('\n');
+  };
 
   return (
     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -64,48 +83,41 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
             {
               type: 'bar',
               data: dataset.map(item => item.cuantitativo),
-              label: 'Escuela Cuantitativo',
+              label: 'Cuantitativo Escuela',
               color: 'red',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'bar',
               data: dataset.map(item => item.cualitativo),
-              label: 'Escuela Cualitativo',
+              label: 'Cualitativo Escuela',
               color: '#2F4858',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'line',
               data: FacAverageCuantitativo,
-              label: 'Facultad Cuantitativo',
+              label: 'Cuantitativo Facultad',
               color: 'blue',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
             {
               type: 'line',
               data: FacAverageCualitativo,
-              label: 'Facultad Cualitativo',
+              label: 'Cualitativo Facultad',
               color: 'green',
               highlightScope: { highlight: 'item', fade: 'global' },
             },
           ]}
           xAxis={[
             {
-              data: dataset.map((item) => item.escuela),
+              data: dataset.map((item) => splitLabel(item.escuela, 10)),
               scaleType: 'band',
               id: 'x-axis-id',
-              labelStyle: {
-                fontSize: 14,
-                transform: `translateY(${
-                      // Hack that debería agregarse en la biblioteca más adelante.
-                      5 * Math.abs(Math.sin((Math.PI * 45) / 180))
-                    }px)`
-              },
               tickLabelStyle: {
-                angle: 20,
-                textAnchor: 'start',
-                fontSize: 12,
+                angle: 0,
+                textAnchor: 'middle',
+                fontSize: 10,
               },
             },
           ]}
@@ -116,8 +128,8 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
               id: 'y-axis-id',
             },
           ]}
-          width={700}
-          height={400}
+          width={1000}
+          height={390}
           margin={{ bottom: 80 }}
         >
           <BarPlot />
@@ -125,7 +137,7 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
           <ChartsXAxis position="bottom" axisId="x-axis-id" />
           <ChartsYAxis axisId="y-axis-id" />
           <ChartsAxisHighlight x="band" y="line" />
-          <ChartsTooltip/>
+          <ChartsTooltip />
         </ChartContainer>
       </Box>
     </Grid>
@@ -133,3 +145,4 @@ const SchoolsChart: React.FC<SchoolsChartProps> = ({ data, schoolData }) => {
 };
 
 export default SchoolsChart;
+
