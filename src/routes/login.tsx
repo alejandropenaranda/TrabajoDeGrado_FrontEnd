@@ -32,7 +32,7 @@ export default function Login() {
     const [alertMessage, setAlertMessage] = useState("");
 
     useEffect(() => {
-        setTimeout(() => setErrorResponse(""), 3000);
+        setTimeout(() => setErrorResponse(""), 5000);
         return;
     }, [errorResponse]);
 

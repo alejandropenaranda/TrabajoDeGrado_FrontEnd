@@ -56,7 +56,6 @@ const DirectorDashboard: React.FC<{}> = () => {
     return (
         <SideBar>
             <Grid container spacing={3} sx={{ height: 'auto', pt: 2 }}>
-                {/* Primera fila */}
                 <Grid item xs={12}>
                     <Grid container spacing={3} justifyContent="center" alignItems="center">
                         <Grid item xs={12} md={4}>

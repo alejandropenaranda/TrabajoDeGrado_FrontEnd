@@ -1,6 +1,7 @@
+
 import * as React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { ChartContainer, ChartsTooltip, ChartsXAxis, ChartsYAxis } from '@mui/x-charts';
+import { ResponsiveChartContainer, ChartsTooltip, ChartsXAxis, ChartsYAxis } from '@mui/x-charts';
 import { BarPlot } from '@mui/x-charts/BarChart';
 import { LinePlot } from '@mui/x-charts/LineChart';
 import { ChartsAxisHighlight } from '@mui/x-charts/ChartsAxisHighlight';
@@ -36,13 +37,15 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
           backgroundColor: 'white',
           maxWidth: '100%',
+          pb: '10px',
+          width: '100%',
           overflow: 'hidden',
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '10px', mt: '20px' }}>
           Promedios de desempeño por docente
         </Typography>
-        <Box sx={{ padding: '10px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px' }}>
+        <Box sx={{ pt: '10px', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px' }}>
           {legendItems.map((item) => (
             <Box key={item.label} sx={{ display: 'flex', alignItems: 'center' }}>
               <Box
@@ -57,77 +60,76 @@ const SchoolTeachersChart: React.FC<SchoolTeachersChartProps> = ({ data, schoolD
             </Box>
           ))}
         </Box>
-        <ChartContainer
-          series={[
-            {
-              type: 'bar',
-              data: dataset.map(item => item.cuantitativo),
-              label: 'Docente Cuantitativo',
-              color: 'red',
-              highlightScope: { highlight: 'item', fade: 'global' },
-            },
-            {
-              type: 'bar',
-              data: dataset.map(item => item.cualitativo),
-              label: 'Docente Cualitativo',
-              color: '#2F4858',
-              highlightScope: { highlight: 'item', fade: 'global' },
-            },
-            {
-              type: 'line',
-              data: schoolAverageCuantitativo,
-              label: 'Escuela Cuantitativo',
-              color: 'blue',
-              highlightScope: { highlight: 'item', fade: 'global' },
-            },
-            {
-              type: 'line',
-              data: schoolAverageCualitativo,
-              label: 'Escuela Cualitativo',
-              color: 'green',
-              highlightScope: { highlight: 'item', fade: 'global' },
-            },
-          ]}
-          xAxis={[
-            {
-              data: dataset.map((item) => item.docente),
-              scaleType: 'band',
-              id: 'x-axis-id',
-              labelStyle: {
-                fontSize: 14,
-                transform: `translateY(${
-                      // Hack that debería agregarse en la biblioteca más adelante.
-                      5 * Math.abs(Math.sin((Math.PI * 45) / 180))
-                    }px)`
+        <Box sx={{ width: '100%', height: 400 }}> {/* Contenedor para responsividad */}
+          <ResponsiveChartContainer
+            series={[
+              {
+                type: 'bar',
+                data: dataset.map(item => item.cuantitativo),
+                label: 'Docente Cuantitativo',
+                color: 'red',
+                highlightScope: { highlight: 'item', fade: 'global' },
               },
-              tickLabelStyle: {
-                angle: 45,
-                textAnchor: 'start',
-                fontSize: 12,
+              {
+                type: 'bar',
+                data: dataset.map(item => item.cualitativo),
+                label: 'Docente Cualitativo',
+                color: '#2F4858',
+                highlightScope: { highlight: 'item', fade: 'global' },
               },
-            },
-          ]}
-          yAxis={[
-            {
-              min: 0,
-              max: 5,
-              id: 'y-axis-id',
-            },
-          ]}
-          width={1600}
-          height={400}
-          margin={{ bottom: 80 }}
-        >
-          <BarPlot />
-          <LinePlot />
-          <ChartsXAxis position="bottom" axisId="x-axis-id" />
-          <ChartsYAxis axisId="y-axis-id" />
-          <ChartsAxisHighlight x="band" y="line" />
-          <ChartsTooltip/>
-        </ChartContainer>
+              {
+                type: 'line',
+                data: schoolAverageCuantitativo,
+                label: 'Escuela Cuantitativo',
+                color: 'blue',
+                highlightScope: { highlight: 'item', fade: 'global' },
+              },
+              {
+                type: 'line',
+                data: schoolAverageCualitativo,
+                label: 'Escuela Cualitativo',
+                color: 'green',
+                highlightScope: { highlight: 'item', fade: 'global' },
+              },
+            ]}
+            xAxis={[
+              {
+                data: dataset.map((item) => item.docente),
+                scaleType: 'band',
+                id: 'x-axis-id',
+                labelStyle: {
+                  fontSize: 14,
+                  transform: `translateY(${5 * Math.abs(Math.sin((Math.PI * 45) / 180))}px)`
+                },
+                tickLabelStyle: {
+                  angle: 45,
+                  textAnchor: 'start',
+                  fontSize: 12,
+                },
+              },
+            ]}
+            yAxis={[
+              {
+                min: 0,
+                max: 5,
+                id: 'y-axis-id',
+              },
+            ]}
+            height={400}  // Solo definimos la altura
+            margin={{ bottom: 80 }}
+          >
+            <BarPlot />
+            <LinePlot />
+            <ChartsXAxis position="bottom" axisId="x-axis-id" />
+            <ChartsYAxis axisId="y-axis-id" />
+            <ChartsAxisHighlight x="band" y="line" />
+            <ChartsTooltip />
+          </ResponsiveChartContainer>
+        </Box>
       </Box>
     </Grid>
   );
 };
 
 export default SchoolTeachersChart;
+

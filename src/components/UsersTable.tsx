@@ -24,7 +24,7 @@ interface UsersTableComponentProps {
 const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns = [], data = [], token }) => {
     const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
     const [isDirectorChecked, setIsDirectorChecked] = useState(false);
-    const [isAdminChecked, setIsAdminChecked] = useState(false); // Nuevo estado para filtro "Es admin"
+    const [isAdminChecked, setIsAdminChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -114,7 +114,7 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
 
     const handleSaveUser = async (updatedUser: User) => {
         if (selectedUser) {
-            const { nombre, email, codigo, is_admin, is_director } = updatedUser;
+            const { nombre, email, codigo, is_admin, is_director, is_active } = updatedUser;
             const body: Partial<User> = {};
 
             if (nombre !== selectedUser.nombre) body.nombre = nombre;
@@ -122,6 +122,7 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
             if (codigo !== selectedUser.codigo) body.codigo = codigo;
             if (is_admin !== selectedUser.is_admin) body.is_admin = is_admin;
             if (is_director !== selectedUser.is_director) body.is_director = is_director;
+            if (is_active !== selectedUser.is_active) body.is_active = is_active;
 
             try {
                 const result = await modifyUser(token, selectedUser.id, body);

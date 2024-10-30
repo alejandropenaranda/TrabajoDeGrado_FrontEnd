@@ -39,7 +39,7 @@ const SchoolView: React.FC<{}> = ({}) => {
     return (
         <>
             <SideBar>
-                <Grid sx={{height: '100vh', mt: 5}}>
+                <Grid sx={{height: '100%', mt: 5}}>
                     <TableComponent name = {`Docentes de la escuela de ${user.escuela.nombre}`} columns={columns} data={averageGradesData} showActions={true} showSchoolFilter={false} showSubjectFilter={false}/>
                 </Grid>
             </SideBar>

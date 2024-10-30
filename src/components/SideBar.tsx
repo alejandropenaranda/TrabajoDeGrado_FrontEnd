@@ -19,6 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { LuSchool } from "react-icons/lu";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { MdOutlineManageAccounts } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoSchoolOutline } from "react-icons/io5";
 import UserHeaderCard from './UserHeaderCard.tsx';
@@ -147,7 +148,7 @@ export default function SideBar({ children }: SideBarProps) {
 
   const menuItems = [
     { text: 'Dashboard', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin', 'Director'], route: role === 'Admin' ? '/admin-dashboard': '/director-dashboard' },
-    { text: 'Gestionar Usuarios', icon: <MdOutlineSpaceDashboard size={25}/>, roles: ['Admin'], route: '/user-manager'},
+    { text: 'Gestionar Usuarios', icon: <MdOutlineManageAccounts size={25}/>, roles: ['Admin'], route: '/user-manager'},
     { text: 'Vista Facultad', icon: <LuSchool size={25}/>, roles: ['Admin'], route: '/faculty-view' },
     { text: 'Vista Escuela', icon: <IoSchoolOutline size={25}/>, roles: ['Director'], route: '/school-view' },
     { text: 'Vista Docente', icon: <FaChalkboardTeacher size={25}/>, roles: ['Director', 'Docente'], route: '/teacher-view' },

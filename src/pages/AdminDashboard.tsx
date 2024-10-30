@@ -49,7 +49,7 @@ const AdminDashboard: React.FC = () => {
             <SideBar>
                 <Grid container spacing={1} direction={'row'} sx={{ p: 4, height: '100%'}}>
 
-                    <Grid item sm={12} lg={4} >
+                    <Grid item sm={12} lg={4} justifyContent="center">
                         <WelcomeUserCard token={token} nombre={user.nombre} />
                     </Grid>
                     <Grid item sm={12} lg={8}>

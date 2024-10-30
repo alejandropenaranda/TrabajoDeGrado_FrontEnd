@@ -6,6 +6,7 @@ export interface User {
     is_admin: boolean;
     is_director: boolean;
     is_profesor: boolean;
+    is_active:boolean;
     escuela: Escuela;
     password?: string; 
 }

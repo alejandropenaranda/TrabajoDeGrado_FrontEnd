@@ -59,7 +59,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ open, onClose, onSave
         <Modal open={open} onClose={onClose}>
             <Box sx={{
                 position: 'absolute', top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)', width: 400,
+                transform: 'translate(-50%, -50%)', width: 500,
                 backgroundColor: 'white', padding: 4, borderRadius: 2,
                 boxShadow: 24
             }}>

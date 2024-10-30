@@ -5,7 +5,23 @@ interface TeacherGradesCardsProps {
     data: AverageGradesResponse;
 }
 
-const TeacherGradesCards: React.FC<TeacherGradesCardsProps> = ({ data }) => {
+const TeacherGradesCards: React.FC<TeacherGradesCardsProps> = ({ data }) => {   
+
+    if ('error' in data) {
+        return (
+            <Grid container spacing={4} justifyContent="center">
+                <Grid item xs={12}>
+                    <Card sx={{ borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', width: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h5" sx={{ fontWeight: '500', textAlign: 'center',color: '#5c5c5c' }}>
+                                No fue posible obtener la información
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+        );
+    }
 
     return (
         <Grid container spacing={4} justifyContent="center">

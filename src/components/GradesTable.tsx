@@ -106,10 +106,10 @@ const TableComponent: React.FC<TableComponentProps> = ({ name, columns = [], dat
     const formatCellData = (data: any, path: string) => {
         const value = getNestedValue(data, path);
         if (typeof value === 'number') {
-            return value.toFixed(2);
+            return value === 0.0 ? 'Sin datos' : value.toFixed(2);
         }
         if (typeof value === 'string') {
-            return value;
+            return value;   
         }
         return '';
     };

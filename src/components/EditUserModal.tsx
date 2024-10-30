@@ -53,7 +53,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
         <Modal open={open} onClose={onClose}>
             <Box sx={{
                 position: 'absolute', top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)', width: 400,
+                transform: 'translate(-50%, -50%)', width: 500,
                 backgroundColor: 'white', padding: 4, borderRadius: 2,
                 boxShadow: 24
             }}>
@@ -99,6 +99,15 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
                             />
                         }
                         label="Es Director"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={updatedUser.is_active}
+                                onChange={(e) => handleInputChange('is_active', e.target.checked)}
+                            />
+                        }
+                        label="Activo"
                     />
                 </Box>
                 <TextField
@@ -167,4 +176,3 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, open, onClose, onSa
 };
 
 export default EditUserModal;
-
