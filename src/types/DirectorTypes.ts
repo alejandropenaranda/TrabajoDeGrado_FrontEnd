@@ -18,8 +18,10 @@ export interface  TeacherRankingItem{
     promedio_total: number;
 }
 
-export type TeacherRankingResponse = TeacherRankingItem[];
-
+export interface TeacherRankingResponse {
+    top_best: TeacherRankingItem[];
+    top_worst: TeacherRankingItem[];
+}
 
 export interface TeacherRankingError{
     error: string;

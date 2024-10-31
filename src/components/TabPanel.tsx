@@ -135,11 +135,17 @@ const MyTabs: React.FC<TabsProps> = ({ token, id }) => {
           },
           '& .MuiTab-root': {
             color: '#FFFFFF',
-            textDecoration: 'none', // Asegúrate de que no haya subrayado
+            textDecoration: 'none',
+            '&:focus, &:active, &:visited': {
+              color: 'white',
+            },
           },
           '& .Mui-selected': {
             color: '#FFFFFF',
             fontWeight: 500,
+            '&:focus, &:active, &:visited': {
+              color: 'white',
+            },
           },
         }}
       >
