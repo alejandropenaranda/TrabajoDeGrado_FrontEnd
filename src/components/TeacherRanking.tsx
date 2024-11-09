@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Box, Tabs, Tab } from '@mui/material';
 import { TeacherRankingResponse, TeacherRankingItem } from '../types/DirectorTypes';
 
@@ -9,13 +9,6 @@ interface TeacherRankingTableProps {
 
 const TeacherRankingTable: React.FC<TeacherRankingTableProps> = ({ data, escuela }) => {
     const [tabValue, setTabValue] = useState(0);
-
-    useEffect(() => {
-        console.log("Datos recibidos:", data);
-        console.log("Top 10 mejor rankeados:", data.top_best);
-        console.log("Top 10 menor rankeados:", data.top_worst);
-    }, [data]);
-
     const handleChange = (__event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
     };

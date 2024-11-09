@@ -19,12 +19,6 @@ export default function Login() {
 
     const auth = useAuth();
     const goTo = useNavigate();
-
-    if (auth.isAuthenticated) {
-        return <Navigate to='/' />;
-    }
-    
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +30,19 @@ export default function Login() {
         return;
     }, [errorResponse]);
 
-
+    if (auth.isAuthenticated) {
+        const user = auth.getUser();
+        if (user) {
+            if (user.is_admin) {
+                return <Navigate to='/admin-dashboard' />;
+            } else if (user.is_director) {
+                return <Navigate to='/director-dashboard' />;
+            } else if (user.is_profesor) {
+                return <Navigate to='/teacher-view' />;
+            }
+        }
+    }
+    
     const validateEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);

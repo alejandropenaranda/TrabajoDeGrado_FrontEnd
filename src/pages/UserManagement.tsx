@@ -29,8 +29,6 @@ const UserManagement: React.FC = () => {
         { headerName: 'Escuela', fieldName: 'escuela.nombre' },
     ];
 
-    console.log (usersData);
-
     return (
         <>
             <SideBar>

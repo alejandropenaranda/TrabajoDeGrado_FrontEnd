@@ -28,12 +28,12 @@ const SchoolFortDeb: React.FC<SchoolFortDebProps> = ({ valoraciones }) => {
             }}
         >
             <Typography variant="h5" align="center" fontWeight="bold" gutterBottom>
-                Fortalezas y oportunidades de mejora generales de los docentes de la escuela
+                Fortalezas y oportunidades de mejora cualitativas generales de los docentes de la escuela
             </Typography>
 
             {error ? (  // Si hay un error, lo mostramos aquí
                 <Typography variant="body1" align="center" color="error">
-                    No se logró identificar fortalezas y oportunidades de mejora para la escuela.
+                    No se logró identificar fortalezas y oportunidades de mejora cualitativas para la escuela.
                 </Typography>
             ) : noData ? (
                 <Typography variant="body1" align="center">

@@ -152,10 +152,8 @@ const UsersTableComponent: React.FC<UsersTableComponentProps> = ({ name, columns
     };
 
     const handleCreateUser = async (newUser: createUser) => {
-        console.log('Nuevo usuario creado:', newUser);
         try {
             const result = await createUserService(token, newUser);
-            console.log(result);
     
             if ('user' in result && result.user && 'id' in result.user) {
                 setUsers(prevUsers => [...prevUsers, result.user]);

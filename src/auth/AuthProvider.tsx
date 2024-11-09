@@ -32,12 +32,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const loggedUserToken = localStorage.getItem("token");
 
         if (loggedUserJSON && loggedUserToken) {
-            console.log("Este es el token que obtiene del storage: " + loggedUserToken);
             setAccessToken(loggedUserToken);
             const user = JSON.parse(loggedUserJSON) as User;
             setUser(user);
             setIsAuthenticated(true);
-            console.log("Cargué los datos de autenticación");
         } else {
             setIsAuthenticated(false);
         }
